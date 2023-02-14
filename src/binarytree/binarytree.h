@@ -1,1 +1,3 @@
+namespace leetcode {
 void binarytree();
+}

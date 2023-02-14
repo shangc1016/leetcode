@@ -2,6 +2,6 @@
 #include <iostream>
 
 
-void binarytree() {
+void leetcode::binarytree() {
   std::cout<< "binarytree" << std::endl;
 }

@@ -1,4 +1,7 @@
 add_rules("mode.debug", "mode.release")
+set_warnings("all", "error")
+
+
 
 target("array")
     set_kind("static")
@@ -12,17 +15,26 @@ target("array")
     set_kind("static")
     add_files("src/array/*.cpp")
 
+
 target("list")
     set_kind("static")
     add_files("src/list/*.cpp")
 
+target("hash")
+    set_kind("static")
+    add_files("src/hash/*.cpp")
 
+target("string")
+    set_kind("static")
+    add_files("src/string/*.cpp")
 
-target("leetcode")
+target("main")
     set_kind("binary")
     add_deps("array")
     add_deps("binarytree")
     add_deps("list")
+    add_deps("hash")
+    add_deps("string")
     add_files("src/main.cpp")
 
 --
