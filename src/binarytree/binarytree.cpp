@@ -398,22 +398,37 @@ void recoverTree(TreeNode *root) {
   }
 }
 
-int helper(TreeNode *root, int &val) {
-  if (!root) return -1000;
-  int left = helper(root->left, val);
-  int right = helper(root->right, val);
-  cout << "left =" << left << endl;
-  cout << "right =" << right << endl;
+// int helper(TreeNode *root, int &val) {
+//   if (!root) return -1000;
+//   int left = helper(root->left, val);
+//   int right = helper(root->right, val);
+//   cout << "left =" << left << endl;
+//   cout << "right =" << right << endl;
 
-  val = max({val, left, right, root->val, left + root->val, root->val + right,
-             left + right + root->val});
-  return val;
-}
+//   val = max({val, left, right, root->val, left + root->val, root->val +
+//   right,
+//              left + right + root->val});
+//   return val;
+// }
 
 int maxPathSum(TreeNode *root) {
-  int val = -1000;
-  helper(root, val);
-  return val;
+  if (!root->left && !root->right) {
+    return root->val;
+  }
+  if (!root->left) {
+    int right = maxPathSum(root->right);
+    right = max(0, right);
+    return max({right, root->val, root->val + right});
+  }
+  if (!root->right) {
+    int left = maxPathSum(root->left);
+    left = max(left, 0);
+    return max({left, root->val, root->val + left});
+  }
+  int left = maxPathSum(root->left);
+  int righgt = maxPathSum(root->right);
+  int mid = root->val;
+  return max({left, righgt, left + mid, mid + righgt, left + mid + righgt});
 }
 
 void helper(TreeNode *root, int &odd, int &even) {
@@ -437,12 +452,12 @@ void helper(TreeNode *root, int &odd, int &even) {
   }
 }
 
-int rob(TreeNode *root) {
-  int odd = 0;
-  int even = 0;
-  helper(root, odd, even);
-  return odd > even ? odd : even;
-}
+// int rob(TreeNode *root) {
+//   int odd = 0;
+//   int even = 0;
+//   helper(root, odd, even);
+//   return odd > even ? odd : even;
+// }
 
 int hhelper(TreeNode *root, map<int, int> &map) {
   if (!root) return 0;
@@ -487,7 +502,7 @@ int findTilt(TreeNode *root) {
 }
 
 int widthOfBinaryTree(TreeNode *root) {
-  if(!root) return 0;
+  if (!root) return 0;
   int width = 0;
   queue<TreeNode *> queue;
   queue.push(root);
@@ -496,7 +511,7 @@ int widthOfBinaryTree(TreeNode *root) {
     if (width < sz) width = sz;
     while (sz--) {
       auto ptr = queue.front();
-      if(!ptr) continue;
+      if (!ptr) continue;
       queue.pop();
       queue.push(ptr->left);
       queue.push(ptr->right);
