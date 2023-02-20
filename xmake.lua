@@ -28,6 +28,15 @@ target("string")
     set_kind("static")
     add_files("src/string/*.cpp")
 
+target("stack")
+    set_kind("static")
+    add_files("src/stack/*.cpp")
+
+target("tree")
+    set_kind("static")
+    add_files("src/tree/*.cpp")
+
+    
 target("main")
     set_kind("binary")
     add_deps("array")
@@ -35,6 +44,8 @@ target("main")
     add_deps("list")
     add_deps("hash")
     add_deps("string")
+    add_deps("stack")
+    add_deps("tree")
     add_files("src/main.cpp")
 
 --
