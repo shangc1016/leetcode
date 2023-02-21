@@ -1,6 +1,9 @@
 #include "greedy.h"
 
 #include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <vector>
 
 namespace leetcode {
 
@@ -26,9 +29,56 @@ int wiggleMaxLength(vector<int>& nums) {
   if (nums.size() == 2 && nums[0] == nums[1]) return 0;
   int count = 0;
   for (int i = 1; i < nums.size() - 1; i++) {
-    
   }
   return count;
 }
 
+int maxSubArray(vector<int>& nums) {
+  //   动态规划
+  vector<int> dp(nums.size(), 0);
+  dp[0] = nums[0];
+  for (int i = 1; i < nums.size(); i++) {
+    dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+  }
+  int max = dp[0];
+  for (int i = 1; i < dp.size(); i++) {
+    if (max < dp[i]) max = dp[i];
+  }
+  return max;
+}
+
+int maxProfit(vector<int>& prices) {
+  vector<int> profile(prices.size() - 1, 0);
+  int all_profile = 0;
+  for (int i = 0; i < profile.size(); i++) {
+    profile[i] = prices[i + 1] - prices[i];
+    if (profile[i] > 0) all_profile += profile[i];
+  }
+  return all_profile;
+}
+
+bool canJump(vector<int>& nums) {
+  if (nums.size() == 1) return true;
+  int max_range = 0;
+  for (int i = 0; i <= max_range; i++) {
+    max_range = max(max_range, i + nums[i]);
+    if (max_range >= nums.size() - 1) return true;
+  }
+  return false;
+}
+
+static bool compare(int a, int b) { return abs(a) > abs(b); }
+int largestSumAfterKNegations(vector<int>& nums, int k) {
+  sort(nums.begin(), nums.end(), compare);
+  for (int i = 0; i < nums.size(); i++) {
+    if (nums[i] < 0 && k > 0) {
+      nums[i] = abs(nums[i]);
+      k--;
+    }
+  }
+  while (k-- > 0) nums[nums.size() - 1] = -nums[nums.size() - 1];
+  int count = 0;
+  for (auto item : nums) count += item;
+  return count;
+}
 }  // namespace leetcode

@@ -36,6 +36,10 @@ target("tree")
     set_kind("static")
     add_files("src/tree/*.cpp")
 
+
+target("dp")
+    set_kind("static")
+    add_files("src/dp/*.cpp")
     
 target("main")
     set_kind("binary")
@@ -46,6 +50,7 @@ target("main")
     add_deps("string")
     add_deps("stack")
     add_deps("tree")
+    add_deps("dp")
     add_files("src/main.cpp")
 
 --
