@@ -49,23 +49,19 @@ int uniquePaths(int m, int n) {
 }
 
 int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
-  vector<vector<int>> grid(obstacleGrid.size(),
-                           vector<int>(obstacleGrid[0].size(), 0));
-  for (int i = 0; i < obstacleGrid.size(); i++) grid[i][0] = 1;
-  for (int i = 0; i < obstacleGrid[0].size(); i++) grid[0][1] = 1;
-
-  for (int i = 1; i < obstacleGrid.size(); i++) {
-    for (int j = 1; j < obstacleGrid[0].size(); j++) {
-      if (obstacleGrid[i][j] == 1) grid[i][j] = 0;
-      else {
-        int left = obstacleGrid[i][j - 1] == 1 ? 0 : grid[i][j - 1];
-        int up = obstacleGrid[i - 1][j] == 1 ? 0 : grid[i - 1][j];
-        grid[i][j] = left + up;
-      }
-
+  int m = obstacleGrid.size();
+  int n = obstacleGrid[0].size();
+  if (obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1) return 0;
+  vector<vector<int>> dp(m, vector<int>(n, 0));
+  for (int i = 0; i < m && obstacleGrid[i][0] != 1; i++) dp[i][0] = 1;
+  for (int i = 0; i < n && obstacleGrid[0][i] != 1; i++) dp[0][i] = 1;
+  for (int i = 1; i < m; i++) {
+    for (int j = 1; j < n; j++) {
+      if (obstacleGrid[i][j] == 1) continue;
+      dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
     }
   }
-  return grid[grid.size() - 1][grid[0].size() - 1];
+  return dp[m - 1][n - 1];
 }
 
 }  // namespace leetcode
