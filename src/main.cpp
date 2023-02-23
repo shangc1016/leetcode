@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstddef>
 #include <cstdio>
 #include <functional>
@@ -16,13 +17,10 @@
 #include "string/istring.h"
 #include "tree/tree.h"
 
-
-
 using namespace std;
 using namespace leetcode;
 
 int main(int argc, char** argv) {
   
-
-      return 0;
+  return 0;
 }

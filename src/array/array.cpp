@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 namespace leetcode {
 void array() { std::cout << "array" << std::endl; }

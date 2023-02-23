@@ -2,6 +2,7 @@
 #define __DP_H_
 
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -16,5 +17,9 @@ int minCostClimbingStairs(vector<int>& cost);
 int uniquePaths(int m, int n);
 
 int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid);
+
+int integerBreak(int n);
+
+int numTrees(int n) ;
 }  // namespace leetcode
 #endif
