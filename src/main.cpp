@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <queue>
 #include <string>
 #include <utility>
@@ -20,7 +21,4 @@
 using namespace std;
 using namespace leetcode;
 
-int main(int argc, char** argv) {
-  
-  return 0;
-}
+int main(int argc, char** argv) { return 0; }

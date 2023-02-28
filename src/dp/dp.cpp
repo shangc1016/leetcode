@@ -163,4 +163,48 @@ int numTrees(int n) {
   return dp[n];
 }
 
+// https://leetcode.cn/problems/partition-equal-subset-sum/
+bool canPartition(vector<int>& nums) {
+  // 背包问题，dp[i]表示背包容量为i的时候的最大价值
+  // 在这个问题中，weight[i] = values[i] = nums[i];
+  // dp[i] = max({dp[i], dp[i - weight[j]] + values[j]});
+  // 题目中nums.length最大200，nums[i]最大100
+  // 那么数组的和最大20000，只需要计算难呢过不能平分，也就是只需要10000
+  // 所以开辟dp[10001];
+
+  int sum = 0;
+  for (auto item : nums) sum += item;
+
+  if (sum % 2 != 0) return false;
+  sum /= 2;
+
+  vector<int> dp(10001, 0);
+  for (int i = 0; i < nums.size(); i++) {
+    for (int j = sum; j >= nums[i]; j--) {
+      dp[j] = max({dp[j], dp[j - nums[i]] + nums[i]});
+    }
+  }
+  return dp[sum] == sum;
+}
+
+// 背包问题，
+// dp[i] 表示容量为i的背包，最多可以背的最大重量是dp[i]
+// dp[i] = max({dp[i], dp[i - weight[j]] + weight[j]})
+// 石头个数最大30，重量最大100。所以容量最大为30000
+// 这个问题只需要尽可能的将石头按照重量平分，所以i最大是15001
+int lastStoneWeightII(vector<int>& stones) {
+  vector<int> dp(15001, 0);
+
+  int sum = 0;
+  for (auto item : stones) sum += item;
+  int target = sum / 2;
+
+  for (int i = 0; i < stones.size(); i++) {
+    for (int j = target; j >= stones[i]; j--) {
+      dp[j] = max({dp[j], dp[j - stones[i]] + stones[i]});
+    }
+  }
+  return sum - dp[target] - dp[target];
+}
+
 }  // namespace leetcode
