@@ -316,16 +316,17 @@ int combinationSum4(vector<int>& nums, int target) {
   // 3、递推公式：dp[j] += dp[j - nums[i]];
   // tips. 数组汇总的每个元素是无限多的，所以是完全背包问题
 
+  // 排列问题、外层循环使用背包、内层循环使用数组
+  // 遍历背包的时候升序遍历
+
   vector<int> dp(target + 1, 0);
   dp[0] = 1;
-
-  for (int j = 0; j <= target; j++) {
-    for (int i = 0; i < nums.size(); i++) {
-      if (j - nums[i] >= 0 && dp[j] < INT32_MAX - dp[j - nums[i]])
-        dp[j] += dp[j - nums[i]];
+  for (int i = 0; i <= target; i++) {
+    for (int j = 0; j < nums.size(); j++) {
+      if (i - nums[j] >= 0 && dp[i] < INT32_MAX - dp[i - nums[j]])
+        dp[i] += dp[i - nums[j]];
     }
   }
-
   return dp[target];
 }
 
@@ -347,22 +348,36 @@ int climbStairsII(int n, int maxStep) {
 }
 
 int coinChange(vector<int>& coins, int amount) {
-  // 求凑出总金额最少的硬币个数，不存在的话返回-1
+  // 求得凑成金币的最少硬币个数，如果不能凑出来返回-1
 
-  // 1、dp[i]表示凑出金额为i所需要的最少的硬币个数
-  // 2、确定初值：因为是求最小值，先把dp数组全部初始化为最大值，而且dp[0] = 0
-  // 确定递推公式：dp[i] = min(dp[i], dp[i - coins[j]] + 1)
+  // 每种硬币是无限的
+  // dp[i]表示凑出金额为i的最少金币个数
+  // dp[0] = 0
+  // 递推公式：dp[i]  = min(dp[i], dp[i - coins[j]] + 1);
+
+  // 因为递推公式求min，所以dp数组初始值设置为INT32_MAX
 
   vector<int> dp(amount + 1, INT32_MAX);
   dp[0] = 0;
 
+  // 硬币是无限的，遍历背包的时候升序遍历
+  // 只计算凑成金额的硬币数量，所以是组合问题，
+  // 组合问题，外层遍历数组、内层遍历背包
+
+  // 外层遍历数组
   for (int i = 0; i < coins.size(); i++) {
+    // 内层遍历背包可能的容量，而且因为是数组元素可以重复取，所以使用升序遍历
     for (int j = coins[i]; j <= amount; j++) {
+      // 因为dp数组初始化为INT32_MAX，而且在递推公式中，
+      // dp[j]可能等于dp[j - coins[i]] + 1，
+      // 所以dp[j]有移除的可能性，溢出的话说明凑不出这样的金额，直接跳过
       if (dp[j - coins[i]] != INT32_MAX) {
         dp[j] = min(dp[j], dp[j - coins[i]] + 1);
       }
     }
   }
+  // dp[amount]还是初始值，说明遍历不到这个位置，凑不出amount这个金额，
+  // 直接返回-1
   if (dp[amount] == INT32_MAX) return -1;
   return dp[amount];
 }
@@ -370,7 +385,7 @@ int coinChange(vector<int>& coins, int amount) {
 int numSquares(int n) {
   // 动规问题，翻译一下：
   // 完全平方数就是数组元素，而且可以无限使用
-  // 凑出和为n的背包，求得背包中元素的最少个数
+  // 凑出和为n的背包，求得背包中元素的最少个数，组合问题
   // dp[i]表示容量为i的背包的最少元素个数
   // 初始化为最大值，dp[0] = 0;
   // 递推公式: dp[i] = min(dp[i], dp[i - pow(j)] + 1)
@@ -378,9 +393,11 @@ int numSquares(int n) {
   vector<int> dp(n + 1, INT32_MAX);
   dp[0] = 0;
 
-  for (int i = 1; i * i <= n; i++) {
+  for (int i = 1; i <= n; i++) {
     for (int j = i * i; j <= n; j++) {
-      dp[j] = min(dp[j], dp[j - i * i] + 1);
+      if (dp[j - i * i] != INT32_MAX) {
+        dp[j] = min(dp[j], dp[j - i * i] + 1);
+      }
     }
   }
   return dp[n];

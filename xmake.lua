@@ -40,9 +40,15 @@ target("tree")
 target("dp")
     set_kind("static")
     add_files("src/dp/*.cpp")
+
+
+target("sword_to_offer")
+    set_kind("static")
+    add_files("src/sword_to_offer/*.cpp")
     
 target("main")
     set_kind("binary")
+    add_files("src/main.cpp")
     add_deps("array")
     add_deps("binarytree")
     add_deps("list")
@@ -51,7 +57,8 @@ target("main")
     add_deps("stack")
     add_deps("tree")
     add_deps("dp")
-    add_files("src/main.cpp")
+    add_deps("sword_to_offer")
+    
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
