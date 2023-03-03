@@ -231,6 +231,8 @@ vector<int> findFrequentTreeSum(TreeNode *root);
 int findTilt(TreeNode *root);
 
 int widthOfBinaryTree(TreeNode *root);
+
+int maxPathSum(TreeNode *root);
 }  // namespace leetcode
 
 #endif

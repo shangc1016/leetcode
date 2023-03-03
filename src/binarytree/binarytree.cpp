@@ -411,25 +411,25 @@ void recoverTree(TreeNode *root) {
 //   return val;
 // }
 
-int maxPathSum(TreeNode *root) {
-  if (!root->left && !root->right) {
-    return root->val;
-  }
-  if (!root->left) {
-    int right = maxPathSum(root->right);
-    right = max(0, right);
-    return max({right, root->val, root->val + right});
-  }
-  if (!root->right) {
-    int left = maxPathSum(root->left);
-    left = max(left, 0);
-    return max({left, root->val, root->val + left});
-  }
-  int left = maxPathSum(root->left);
-  int righgt = maxPathSum(root->right);
-  int mid = root->val;
-  return max({left, righgt, left + mid, mid + righgt, left + mid + righgt});
-}
+// int maxPathSum(TreeNode *root) {
+//   if (!root->left && !root->right) {
+//     return root->val;
+//   }
+//   if (!root->left) {
+//     int right = maxPathSum(root->right);
+//     right = max(0, right);
+//     return max({right, root->val, root->val + right});
+//   }
+//   if (!root->right) {
+//     int left = maxPathSum(root->left);
+//     left = max(left, 0);
+//     return max({left, root->val, root->val + left});
+//   }
+//   int left = maxPathSum(root->left);
+//   int righgt = maxPathSum(root->right);
+//   int mid = root->val;
+//   return max({left, righgt, left + mid, mid + righgt, left + mid + righgt});
+// }
 
 void helper(TreeNode *root, int &odd, int &even) {
   int level = 0;
@@ -518,6 +518,22 @@ int widthOfBinaryTree(TreeNode *root) {
     }
   }
   return width;
+}
+
+int maxPathSum(TreeNode *root, int &val) {
+  if (root == nullptr) return 0;
+  int left = maxPathSum(root->left, val);
+  int right = maxPathSum(root->right, val);
+  int lmr = root->val + max(left, 0) + max(right, 0);
+  int ret = root->val + max({0, left, right});
+  val = max({val, lmr, ret});
+  return ret;
+}
+
+int maxPathSum(TreeNode *root) {
+  int val = INT32_MIN;
+  maxPathSum(root, val);
+  return val;
 }
 
 }  // namespace leetcode
