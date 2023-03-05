@@ -186,9 +186,9 @@ vector<vector<int>> levelOrder(TreeNode* root) {
 
 bool sameTree(TreeNode* A, TreeNode* B) {
   //   这儿有(A && !B)是因为A、B相同的部分不一定在叶子上
-  if (!A && !B || A && !B)
+  if ((!A && !B) || (A && !B))
     return true;
-  else if (!A && B || A->val != B->val)
+  else if ((!A && B) || A->val != B->val)
     return false;
   else {
     bool left = sameTree(A->left, B->left);
@@ -203,7 +203,7 @@ bool isSubStructure(TreeNode* A, TreeNode* B) {
 }
 
 TreeNode* mirrorTree(TreeNode* root) {
-  if (!root || !root->left && !root->right) return root;
+  if (!root || (!root->left && !root->right)) return root;
   auto left = root->left;
   auto right = root->right;
   root->left = right;
@@ -215,7 +215,8 @@ TreeNode* mirrorTree(TreeNode* root) {
 
 bool symm(TreeNode* left, TreeNode* right) {
   if (!left && !right) return true;
-  if (!left && right || left && !right || left->val != right->val) return false;
+  if ((!left && right) || (left && !right) || (left->val != right->val))
+    return false;
   bool l = symm(left->left, right->right);
   bool r = symm(left->right, right->left);
   return l && r;
@@ -330,8 +331,8 @@ ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
   if (!l1) return l2;
   if (!l2) return l1;
   ListNode* merge = new ListNode(0);
-  ListNode* ptr1 = l1;
-  ListNode* ptr2 = l2;
+  // ListNode* ptr1 = l1;
+  // ListNode* ptr2 = l2;
   ListNode* ptr = merge;
   while (l1 && l2) {
     if (l1->val < l2->val) {
