@@ -378,52 +378,70 @@ namespace leetocde {
 //   }
 // };
 
+// class Solution {
+//  private:
+//   vector<vector<string>> result;
+
+//   // n为棋盘大小，n*n
+//   // row是棋盘第几行
+//   void backtracing(int n, int row, vector<string> &chessboard) {
+//     if (n == row) {
+//       result.push_back(chessboard);
+//       return;
+//     }
+
+//     // for循环遍历
+//     for (int col = 0; col < n; col++) {
+//       if (isValid(row, col, chessboard, n)) {
+//         chessboard[row][col] = 'Q';
+//         backtracing(n, row + 1, chessboard);
+//         chessboard[row][col] = '.';
+//       }
+//     }
+//   }
+
+//   bool isValid(int row, int col, vector<string> &chessboard, int n) {
+//     // 检查同一列
+//     for (int i = 0; i < row; i++) {
+//       if (chessboard[i][col] == 'Q') return false;
+//     }
+//     // 检查45度是否有冲突
+//     for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+//       if (chessboard[i][j] == 'Q') return false;
+//     }
+
+//     // 检查135度是否有冲突
+//     for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+//       if (chessboard[i][j] == 'Q') return false;
+//     }
+
+//     return true;
+//   }
+
+//  public:
+//   vector<vector<string>> solveNQueens(int n) {
+//     result.clear();
+//     std::vector<string> chessboard(n, string(n, '.'));
+//     backtracing(n, 0, chessboard);
+//     return result;
+//   }
+// };
+
 class Solution {
- private:
-  vector<vector<string>> result;
-
-  // n为棋盘大小，n*n
-  // row是棋盘第几行
-  void backtracing(int n, int row, vector<string> &chessboard) {
-    if (n == row) {
-      result.push_back(chessboard);
-      return;
-    }
-
-    // for循环遍历
-    for (int col = 0; col < n; col++) {
-      if (isValid(row, col, chessboard, n)) {
-        chessboard[row][col] = 'Q';
-        backtracing(n, row + 1, chessboard);
-        chessboard[row][col] = '.';
-      }
-    }
-  }
-
-  bool isValid(int row, int col, vector<string> &chessboard, int n) {
-    // 检查同一列
-    for (int i = 0; i < row; i++) {
-      if (chessboard[i][col] == 'Q') return false;
-    }
-    // 检查45度是否有冲突
-    for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-      if (chessboard[i][j] == 'Q') return false;
-    }
-
-    // 检查135度是否有冲突
-    for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
-      if (chessboard[i][j] == 'Q') return false;
-    }
-
-    return true;
-  }
-
  public:
-  vector<vector<string>> solveNQueens(int n) {
-    result.clear();
-    std::vector<string> chessboard(n, string(n, '.'));
-    backtracing(n, 0, chessboard);
-    return result;
+  vector<string> brackets;
+  string str;
+  void dfs(const string &str, int left, int right) {
+    if (left < 0 || left > right) return;
+    if (left == 0 && right == 0) {
+      brackets.push_back(str);
+    }
+    dfs(str + '(', left - 1, right);
+    dfs(str + ')', left, right - 1);
+  }
+  vector<string> generateParenthesis(int n) {
+    dfs(str, n, n);
+    return brackets;
   }
 };
 

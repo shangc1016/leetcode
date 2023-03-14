@@ -429,4 +429,42 @@ bool wordBreak(string s, vector<string>& wordDict) {
   return dp[s.size()];
 }
 
+// 股票只能卖一次
+// dp[i]表示的是i天以及以前的最低价
+int maxProfit(vector<int>& prices) {
+  int max_val = 0;
+  int minPrice = INT32_MAX;
+  int lastMinPrice = prices[0];
+  for (int i = 1; i < prices.size(); i++) {
+    minPrice = lastMinPrice <= prices[i] ? lastMinPrice : prices[i];
+    max_val = prices[i] - minPrice > max_val ? (prices[i] - minPrice) : max_val;
+  }
+  return max_val;
+}
+
+vector<int> countBits(int n) {
+  vector<int> vec(n + 1, 0);
+  for (int i = 0; i <= n; i++) {
+    int count = 0;
+    while (i > 0) {
+      i &= (i - 1);
+      count++;
+    }
+    vec.push_back(count);
+  }
+  return vec;
+}
+
+vector<int> findDisappearedNumbers(vector<int>& nums) {
+  vector<int> vec;
+  unordered_set<int> uset;
+  for (auto item : nums) uset.insert(item);
+  for (int i = 1; i <= nums.size(); i++) {
+    if (uset.find(i) == uset.end()) {
+      vec.push_back(i);
+    }
+  }
+  return vec;
+}
+
 }  // namespace leetcode

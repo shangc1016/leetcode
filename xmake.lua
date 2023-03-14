@@ -45,6 +45,11 @@ target("dp")
 target("sword_to_offer")
     set_kind("static")
     add_files("src/sword_to_offer/*.cpp")
+
+
+target("slidewindow")
+    set_kind("static")
+    add_files("src/slidewindow/*.cpp")
     
 target("main")
     set_kind("binary")
@@ -57,6 +62,7 @@ target("main")
     add_deps("stack")
     add_deps("tree")
     add_deps("dp")
+    add_deps("slidewindow")
     add_deps("sword_to_offer")
     
 

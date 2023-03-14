@@ -3,14 +3,17 @@
 
 #include <algorithm>
 #include <climits>
+#include <cstdarg>
+#include <cstddef>
 #include <queue>
 #include <stack>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 using namespace std;
 
-namespace leetcode {
+namespace design {
 
 class CQueue {
  private:
@@ -64,6 +67,30 @@ class MinStack {
 
   int min() { return stackB.top(); }
 };
-}  // namespace leetcode
+
+struct Node {
+  Node* next_{nullptr};
+  Node* prev_{nullptr};
+  int key_;
+  int value_;
+  Node(int key, int value) : key_(key), value_(value) {}
+};
+
+Node* InsertTail(Node* list, Node* node);
+Node* RemoveHead(Node* list);
+Node* RemoveNode(Node* list, int key);
+
+class LRUCache {
+ private:
+  vector<std::pair<int, int>> vec;
+  
+ public:
+  LRUCache(int capacity) {}
+
+  int get(int key) { return 0; }
+
+  void put(int key, int value) {}
+};
+}  // namespace design
 
 #endif

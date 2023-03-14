@@ -10,31 +10,36 @@
 #include <ostream>
 #include <queue>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "array/array.h"
 #include "backtracing/backtracing.h"
 #include "binarytree/binarytree.h"
+#include "design/design.h"
 #include "dp/dp.h"
 #include "hash/hash.h"
 #include "list/list.h"
+#include "slidewindow/slidewindow.h"
 #include "stack/stack.h"
 #include "string/istring.h"
 #include "tree/tree.h"
 
 using namespace std;
-using namespace leetcode;
+// using namespace leetcode;
+
+using namespace design;
 
 int main(int argc, char** argv) {
-
-
-  map<int, int> map;
-  map[1] = 2;
-  map[2] = 2;
-  map[3] = 2;
-  map[4] = 2;
-  map[5] = 2;
-
-  map
+  unordered_set<int> uset;
+  uset.insert(1);
+  uset.insert(2);
+  uset.insert(3);
+  uset.insert(4);
+  uset.insert(5);
+  uset.insert(6);
+  for (auto item : uset) {
+    cout << item << endl;
+  }
 }

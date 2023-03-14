@@ -42,5 +42,9 @@ int coinChange(vector<int>& coins, int amount);
 int numSquares(int n);
 
 bool wordBreak(string s, vector<string>& wordDict);
+
+int maxProfit(vector<int>& prices);
+
+vector<int> countBits(int n);
 }  // namespace leetcode
 #endif
