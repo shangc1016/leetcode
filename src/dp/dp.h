@@ -46,5 +46,9 @@ bool wordBreak(string s, vector<string>& wordDict);
 int maxProfit(vector<int>& prices);
 
 vector<int> countBits(int n);
+
+int translateNum(int num);
+
+int lengthOfLongestSubstring(string s);
 }  // namespace leetcode
 #endif

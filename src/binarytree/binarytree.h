@@ -233,6 +233,57 @@ int findTilt(TreeNode *root);
 int widthOfBinaryTree(TreeNode *root);
 
 int maxPathSum(TreeNode *root);
+
+int kthLargest(TreeNode *root, int k);
+class Solution1 {
+ private:
+  TreeNode *helper(vector<int> &pre, vector<int> &in, int pstart, int pend,
+                   int istart, int iend) {
+    if (pstart > pend) return nullptr;
+    int node_value = pre[pstart];
+    int index;
+    for (int i = istart; i <= iend; i++) {
+      if (in[i] == node_value) {
+        index = i;
+        break;
+      }
+    }
+    //
+    TreeNode *root = new TreeNode(node_value);
+    root->left =
+        helper(pre, in, pstart + 1, pstart + index - istart, istart, index - 1);
+    root->right =
+        helper(pre, in, pstart + index - istart + 1, pend, index, iend);
+    return root;
+  }
+
+ public:
+  TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
+    return helper(preorder, inorder, 0, preorder.size() - 1, 0,
+                  inorder.size() - 1);
+  }
+};
+
+class Solution2 {
+ private:
+  bool helper(vector<int> &post, int left, int right) {
+    if (left >= right) return true;
+    int l = left;
+    int r = right - 1;
+    while (post[l] < post[right]) l++;
+    while (post[r] > post[right]) r--;
+    if (l - r != 1) return false;
+    bool left_ = helper(post, left, r);
+    bool right_ = helper(post, l, right - 1);
+    return left_ && right_;
+  }
+
+ public:
+  bool verifyPostorder(vector<int> &postorder) {
+    if (postorder.size() <= 1) return true;
+    return helper(postorder, 0, postorder.size() - 1);
+  }
+};
 }  // namespace leetcode
 
 #endif

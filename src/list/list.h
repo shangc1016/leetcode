@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <queue>
 #include <vector>
 
 using namespace std;
@@ -25,7 +26,6 @@ void traverse(ListNode* head);
 // 翻转链表
 ListNode* reverse(ListNode* head);
 
-
 ListNode* removeElements(ListNode* head, int val);
 
 // 翻转链表 https://leetcode.cn/problems/reverse-linked-list/
@@ -44,7 +44,7 @@ ListNode* detectCycle(ListNode* head);
 
 ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
 
-    class MyLinkedList {
+class MyLinkedList {
  private:
   ListNode* head;
   ListNode* tail;
@@ -64,13 +64,9 @@ ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
     return ptr->val;
   }
 
-  void addAtHead(int val) {
-    addAtIndex(0, val);
-  }
+  void addAtHead(int val) { addAtIndex(0, val); }
 
-  void addAtTail(int val) {
-   addAtIndex(size, val);
-  }
+  void addAtTail(int val) { addAtIndex(size, val); }
 
   void addAtIndex(int index, int val) {
     if (index <= 0) {
@@ -78,7 +74,7 @@ ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
       ListNode* node = new ListNode(val, head->next);
       head->next = node;
       size++;
-      if(size == 1) tail = node;
+      if (size == 1) tail = node;
 
     } else if (0 < index && index < size) {
       // 中间插入
@@ -108,9 +104,9 @@ ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
       delete tmp;
       if (record == size - 1) {
         tail = head;
-        while(tail->next) tail = tail->next;
+        while (tail->next) tail = tail->next;
       }
-      size --;
+      size--;
     }
   }
 
@@ -123,4 +119,60 @@ ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
     std::cout << "; size = " << size << std::endl;
   }
 };
+
+class Node {
+ public:
+  int val;
+  Node* left;
+  Node* right;
+
+  Node() {}
+
+  Node(int _val) {
+    val = _val;
+    left = NULL;
+    right = NULL;
+  }
+
+  Node(int _val, Node* _left, Node* _right) {
+    val = _val;
+    left = _left;
+    right = _right;
+  }
+};
+
+class Solution {
+  queue<Node*> queue_;
+
+  void inOrderTraverse(Node* root) {
+    if (root == nullptr) return;
+    inOrderTraverse(root->right);
+    queue_.push(root);
+    inOrderTraverse(root->left);
+  }
+
+  Node* InsertHead(Node* list, Node* node) {
+    if (list == nullptr) return node;
+    Node* prev = list->left;
+    node->right = list;
+    list->left = node;
+
+    prev->right = node;
+    node->right = prev;
+    return node;
+  }
+
+ public:
+  Node* treeToDoublyList(Node* root) {
+    Node* dummy = nullptr;
+    inOrderTraverse(root);
+    while (!queue_.empty()) {
+      dummy = InsertHead(dummy, queue_.front());
+      queue_.pop();
+    }
+    return dummy;
+  }
+};
+
 }  // namespace leetcode
+   // namespace leetcode

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -536,6 +537,23 @@ int maxPathSum(TreeNode *root) {
   return val;
 }
 
+// class Solution {
+//  private:
+//   vector<int> vec;
+//   void inorderTraverse(TreeNode *root, int k) {
+//     if (root == nullptr) return;
+//     if (vec.size() >= k) return;
+//     inorderTraverse(root->right, k);
+//     vec.push_back(root->val);
+//     if (vec.size() >= k) return;
+//     inorderTraverse(root->left, k);
+//   }
 
+//  public:
+//   int kthLargest(TreeNode *root, int k) {
+//     inorderTraverse(root, k);
+//     return vec.back();
+//   }
+// };
 
 }  // namespace leetcode

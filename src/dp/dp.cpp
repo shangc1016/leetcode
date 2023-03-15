@@ -1,7 +1,9 @@
 #include "dp.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <cstdlib>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -443,16 +445,15 @@ int maxProfit(vector<int>& prices) {
 }
 
 vector<int> countBits(int n) {
-  vector<int> vec(n + 1, 0);
-  for (int i = 0; i <= n; i++) {
-    int count = 0;
-    while (i > 0) {
-      i &= (i - 1);
-      count++;
-    }
-    vec.push_back(count);
+  // 记dp[i]表示i的二进制表示中1的个数
+  // y = x & (x-1)，则y的二进制表示中1的个数是x的二进制表示中1的个数减一
+  // dp[y] = dp[x & (x - 1)] +1
+
+  vector<int> dp(n + 1, 0);
+  for (int i = 1; i <= n; i++) {
+    dp[i] = dp[i & (i - 1)] + 1;
   }
-  return vec;
+  return dp;
 }
 
 vector<int> findDisappearedNumbers(vector<int>& nums) {
@@ -465,6 +466,48 @@ vector<int> findDisappearedNumbers(vector<int>& nums) {
     }
   }
   return vec;
+}
+
+int translateNum(int num) {
+  // dp问题，dp[i]表示第i位可以分解成字母的个数
+  if (num < 10) return 1;
+  vector<int> nums;
+  while (num > 0) {
+    nums.push_back(num % 10);
+    num /= 10;
+  }
+
+  nums.push_back(0);
+  std::reverse(nums.begin(), nums.end());
+  vector<int> dp(nums.size(), 0);
+  dp[0] = 1;
+  dp[1] = 1;
+  for (int i = 2; i < nums.size(); i++) {
+    int val = nums[i - 1] * 10 + nums[i];
+    if (10 < val && val < 26) {
+      dp[i] = dp[i - 1] + dp[i - 2];
+    } else {
+      dp[i] = dp[i - 1];
+    }
+  }
+  return dp[nums.size() - 1];
+}
+
+int lengthOfLongestSubstring(string s) {
+  if (s.size() <= 1) return s.size();
+  unordered_set<char> char_set;
+  int left = 0, right = 0;
+
+  int max_count = 0;
+  while (left <= right && right < s.size()) {
+    while (left <= right && right < s.size() &&
+           char_set.find(s[right]) == char_set.end()) {
+      char_set.insert(s[right++]);
+    }
+    max_count = max(max_count, int(char_set.size()));
+    char_set.erase(s[left++]);
+  }
+  return max_count;
 }
 
 }  // namespace leetcode

@@ -427,21 +427,55 @@ namespace leetocde {
 //   }
 // };
 
+// class Solution {
+//  public:
+//   vector<string> brackets;
+//   string str;
+//   void dfs(const string &str, int left, int right) {
+//     if (left < 0 || left > right) return;
+//     if (left == 0 && right == 0) {
+//       brackets.push_back(str);
+//     }
+//     dfs(str + '(', left - 1, right);
+//     dfs(str + ')', left, right - 1);
+//   }
+//   vector<string> generateParenthesis(int n) {
+//     dfs(str, n, n);
+//     return brackets;
+//   }
+// };
+
+struct TreeNode {
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode() : val(0), left(nullptr), right(nullptr) {}
+  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  TreeNode(int x, TreeNode *left, TreeNode *right)
+      : val(x), left(left), right(right) {}
+};
 class Solution {
- public:
-  vector<string> brackets;
-  string str;
-  void dfs(const string &str, int left, int right) {
-    if (left < 0 || left > right) return;
-    if (left == 0 && right == 0) {
-      brackets.push_back(str);
+ private:
+  vector<vector<int>> result;
+  vector<int> vec;
+
+  void backtracing(TreeNode *root, int target) {
+    if (root == nullptr) return;
+    if (root->left == nullptr && root->right == nullptr) {
+      if (target == 0) {
+        result.push_back(vec);
+      } else {
+        return;
+      }
     }
-    dfs(str + '(', left - 1, right);
-    dfs(str + ')', left, right - 1);
+    backtracing(root->left, target - root->val);
+    backtracing(root->right, target - root->val);
   }
-  vector<string> generateParenthesis(int n) {
-    dfs(str, n, n);
-    return brackets;
+
+ public:
+  vector<vector<int>> pathSum(TreeNode *root, int target) {
+    backtracing(root, target);
+    return result;
   }
 };
 

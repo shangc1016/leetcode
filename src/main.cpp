@@ -17,6 +17,7 @@
 #include "array/array.h"
 #include "backtracing/backtracing.h"
 #include "binarytree/binarytree.h"
+#include "bipointer/bipointer.h"
 #include "design/design.h"
 #include "dp/dp.h"
 #include "hash/hash.h"
@@ -31,15 +32,10 @@ using namespace std;
 
 using namespace design;
 
+using namespace bipointer;
+
 int main(int argc, char** argv) {
-  unordered_set<int> uset;
-  uset.insert(1);
-  uset.insert(2);
-  uset.insert(3);
-  uset.insert(4);
-  uset.insert(5);
-  uset.insert(6);
-  for (auto item : uset) {
-    cout << item << endl;
-  }
+  string str = "hello sdc   ";
+
+  reverseWords(str);
 }

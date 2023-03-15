@@ -1,7 +1,7 @@
 add_rules("mode.debug", "mode.release")
 set_warnings("all", "error")
 
-
+add_requires("gtest", {system = true})
 
 target("array")
     set_kind("static")
@@ -50,6 +50,10 @@ target("sword_to_offer")
 target("slidewindow")
     set_kind("static")
     add_files("src/slidewindow/*.cpp")
+
+target("bipointer")
+    set_kind("static")
+    add_files("src/bipointer/*.cpp")
     
 target("main")
     set_kind("binary")
@@ -64,7 +68,14 @@ target("main")
     add_deps("dp")
     add_deps("slidewindow")
     add_deps("sword_to_offer")
+    add_deps("bipointer")
     
+
+target("test")
+    set_kind("binary")
+    add_files("src/test/main.cpp")
+    add_packages("lpthread")
+    add_packages("gtest")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
