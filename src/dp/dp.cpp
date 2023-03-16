@@ -510,4 +510,20 @@ int lengthOfLongestSubstring(string s) {
   return max_count;
 }
 
+// 动规，记dp[i]表示长度为i的绳子切分之后的最大乘积
+// dp[1] = 0
+// dp[2] = 1
+// dp[i] = max(dp[i-j] * j, dp[j] * dp[i-j] ...)， j从1到i-1
+int cuttingRope(int n) {
+  vector<int> dp(n + 1, 0);
+  dp[1] = 0;
+  dp[2] = 1;
+  for (int i = 3; i <= n; i++) {
+    for (int j = 1; j <= i - 1; j++) {
+      dp[i] = max({dp[i], dp[i - j] * j, dp[i - j] * dp[j], j * (i - j)});
+    }
+  }
+  return dp[n];
+}
+
 }  // namespace leetcode

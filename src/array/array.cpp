@@ -61,4 +61,19 @@ vector<int> twoSum(vector<int>& nums, int target) {
   return {};
 }
 
+vector<int> constructArr(vector<int>& a) {
+  vector<int> left2right(a.size(), 1);
+  vector<int> right2left(a.size(), 1);
+  for (int i = 1; i < a.size(); i++) {
+    left2right[i] = left2right[i - 1] * a[i - 1];
+  }
+  for (int i = a.size() - 1; i >= 0; i--) {
+    right2left[i] = right2left[i + 1] * a[i + 1];
+  }
+  for (int i = 0; i < a.size(); i++) {
+    left2right[i] *= right2left[i];
+  }
+  return left2right;
+}
+
 }  // namespace leetcode

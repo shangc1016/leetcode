@@ -5,6 +5,7 @@
 #include <climits>
 #include <cstdarg>
 #include <cstddef>
+#include <deque>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -366,6 +367,71 @@ class MedianFinder {
     } else {
       return left_.top();
     }
+  }
+};
+
+// class Solution {
+//  public:
+//   int singleNumber(vector<int>& nums) {
+//     vector<int> bitcount(32, 0);
+//     for (auto num : nums) {
+//       for (int i = 0; i < 32; i++) {
+//         if (num & 1 << i) bitcount[i]++;
+//       }
+//     }
+//     int unique_number = 0;
+//     for (int i = 0; i < 32; i++) bitcount[i] %= 3;
+//     for (int i = 0; i < 32; i++) {
+//       unique_number += i << 1;
+//     }
+//     return unique_number;
+//   }
+// };
+
+// class Solution {
+//  public:
+//   int majorityElement(vector<int>& nums) {
+//     unordered_map<int, int> umap;
+//     for (auto num : nums) {
+//       umap[num]++;
+//     }
+//     for (auto item : umap) {
+//       if (item.second > nums.size() / 2) {
+//         return item.first;
+//       }
+//     }
+//     return -1;
+//   }
+// };
+
+class MaxQueue {
+  queue<int> queue_;
+  deque<int> max_queue_;
+
+ public:
+  MaxQueue() {}
+
+  int max_value() {
+    if (queue_.empty()) return -1;
+    return max_queue_.front();
+  }
+
+  void push_back(int value) {
+    queue_.push(value);
+    while (!max_queue_.empty() && max_queue_.back() < value) {
+      max_queue_.pop_back();
+    }
+    max_queue_.push_back(value);
+  }
+
+  int pop_front() {
+    if (queue_.empty()) return -1;
+    int value = queue_.front();
+    queue_.pop();
+    if (value == max_queue_.front()) {
+      max_queue_.pop_front();
+    }
+    return value;
   }
 };
 

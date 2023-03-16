@@ -241,7 +241,7 @@ class Solution1 {
                    int istart, int iend) {
     if (pstart > pend) return nullptr;
     int node_value = pre[pstart];
-    int index;
+    int index = istart;
     for (int i = istart; i <= iend; i++) {
       if (in[i] == node_value) {
         index = i;

@@ -16,4 +16,6 @@ vector<vector<int>> generateMatrix(int n);
 
 vector<int> twoSum(vector<int>& nums, int target);
 
+vector<int> constructArr(vector<int>& a);
+
 }  // namespace leetcode

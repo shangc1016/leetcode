@@ -141,7 +141,7 @@ class Node {
   }
 };
 
-class Solution {
+class Solution111 {
   queue<Node*> queue_;
 
   void inOrderTraverse(Node* root) {

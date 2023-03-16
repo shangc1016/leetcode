@@ -76,6 +76,7 @@ target("test")
     add_files("src/test/main.cpp")
     add_packages("lpthread")
     add_packages("gtest")
+    add_deps("string")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

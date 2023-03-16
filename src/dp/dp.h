@@ -50,5 +50,7 @@ vector<int> countBits(int n);
 int translateNum(int num);
 
 int lengthOfLongestSubstring(string s);
+
+int cuttingRope(int n);
 }  // namespace leetcode
 #endif

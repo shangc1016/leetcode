@@ -445,39 +445,41 @@ namespace leetocde {
 //   }
 // };
 
-struct TreeNode {
-  int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode() : val(0), left(nullptr), right(nullptr) {}
-  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-  TreeNode(int x, TreeNode *left, TreeNode *right)
-      : val(x), left(left), right(right) {}
-};
-class Solution {
- private:
-  vector<vector<int>> result;
-  vector<int> vec;
+// struct TreeNode {
+//   int val;
+//   TreeNode *left;
+//   TreeNode *right;
+//   TreeNode() : val(0), left(nullptr), right(nullptr) {}
+//   TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+//   TreeNode(int x, TreeNode *left, TreeNode *right)
+//       : val(x), left(left), right(right) {}
+// };
+// class Solution {
+//  private:
+//   vector<vector<int>> result;
+//   vector<int> vec;
 
-  void backtracing(TreeNode *root, int target) {
-    if (root == nullptr) return;
-    if (root->left == nullptr && root->right == nullptr) {
-      if (target == 0) {
-        result.push_back(vec);
-      } else {
-        return;
-      }
-    }
-    backtracing(root->left, target - root->val);
-    backtracing(root->right, target - root->val);
-  }
+//   void backtracing(TreeNode *root, int target) {
+//     if (root == nullptr) return;
+//     if (root->left == nullptr && root->right == nullptr) {
+//       if (target == 0) {
+//         result.push_back(vec);
+//       } else {
+//         return;
+//       }
+//     }
+//     backtracing(root->left, target - root->val);
+//     backtracing(root->right, target - root->val);
+//   }
 
- public:
-  vector<vector<int>> pathSum(TreeNode *root, int target) {
-    backtracing(root, target);
-    return result;
-  }
-};
+//  public:
+//   vector<vector<int>> pathSum(TreeNode *root, int target) {
+//     backtracing(root, target);
+//     return result;
+//   }
+// };
+
+
 
 }  // namespace leetocde
 

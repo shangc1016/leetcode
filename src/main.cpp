@@ -24,7 +24,7 @@
 #include "list/list.h"
 #include "slidewindow/slidewindow.h"
 #include "stack/stack.h"
-#include "string/istring.h"
+#include "string/string.h"
 #include "tree/tree.h"
 
 using namespace std;
@@ -35,7 +35,5 @@ using namespace design;
 using namespace bipointer;
 
 int main(int argc, char** argv) {
-  string str = "hello sdc   ";
-
-  reverseWords(str);
+  
 }
