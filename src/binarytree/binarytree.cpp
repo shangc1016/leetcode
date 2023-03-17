@@ -15,7 +15,7 @@
 #include <utility>
 #include <vector>
 
-namespace leetcode {
+namespace binarytree {
 
 TreeNode *invertTree(TreeNode *root) {
   if (!root) return nullptr;
@@ -556,4 +556,4 @@ int maxPathSum(TreeNode *root) {
 //   }
 // };
 
-}  // namespace leetcode
+}  // namespace binarytree

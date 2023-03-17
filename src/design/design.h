@@ -404,36 +404,37 @@ class MedianFinder {
 //   }
 // };
 
-class MaxQueue {
-  queue<int> queue_;
-  deque<int> max_queue_;
+// class MaxQueue {
+//   queue<int> queue_;
+//   deque<int> max_queue_;
 
- public:
-  MaxQueue() {}
+//  public:
+//   MaxQueue() {}
 
-  int max_value() {
-    if (queue_.empty()) return -1;
-    return max_queue_.front();
-  }
+//   int max_value() {
+//     if (queue_.empty()) return -1;
+//     return max_queue_.front();
+//   }
 
-  void push_back(int value) {
-    queue_.push(value);
-    while (!max_queue_.empty() && max_queue_.back() < value) {
-      max_queue_.pop_back();
-    }
-    max_queue_.push_back(value);
-  }
+//   void push_back(int value) {
+//     queue_.push(value);
+//     while (!max_queue_.empty() && max_queue_.back() < value) {
+//       max_queue_.pop_back();
+//     }
+//     max_queue_.push_back(value);
+//   }
 
-  int pop_front() {
-    if (queue_.empty()) return -1;
-    int value = queue_.front();
-    queue_.pop();
-    if (value == max_queue_.front()) {
-      max_queue_.pop_front();
-    }
-    return value;
-  }
-};
+//   int pop_front() {
+//     if (queue_.empty()) return -1;
+//     int value = queue_.front();
+//     queue_.pop();
+//     if (value == max_queue_.front()) {
+//       max_queue_.pop_front();
+//     }
+//     return value;
+//   }
+// };
+
 
 }  // namespace design
 

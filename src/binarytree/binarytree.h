@@ -10,7 +10,7 @@
 
 using namespace std;
 
-namespace leetcode {
+namespace binarytree {
 
 struct TreeNode {
   int val;
@@ -22,84 +22,88 @@ struct TreeNode {
       : val(x), left(left), right(right) {}
 };
 
-class Codec {
- private:
-  void preorder(TreeNode *root, vector<int> &pre) {
-    if (!root) return;
-    pre.push_back(root->val);
-    preorder(root->left, pre);
-    preorder(root->right, pre);
-  }
+// class Codec {
+//  private:
+//   void preorder(TreeNode *root, vector<int> &pre) {
+//     if (!root) return;
+//     pre.push_back(root->val);
+//     preorder(root->left, pre);
+//     preorder(root->right, pre);
+//   }
 
-  void inorder(TreeNode *root, vector<int> &in) {
-    if (!root) return;
-    inorder(root->left, in);
-    in.push_back(root->val);
-    inorder(root->right, in);
-  }
+//   void inorder(TreeNode *root, vector<int> &in) {
+//     if (!root) return;
+//     inorder(root->left, in);
+//     in.push_back(root->val);
+//     inorder(root->right, in);
+//   }
 
- public:
-  // Encodes a tree to a single string.
-  string serialize(TreeNode *root) {
-    if (!root) return "";
-    vector<int> pre, in;
-    preorder(root, pre);
-    inorder(root, in);
-    string str;
-    str += to_string(pre[0]);
-    for (int i = 1; i < pre.size(); i++) str += "," + to_string(pre[i]);
-    str += '*';
-    str += to_string(in[0]);
-    for (int i = 1; i < in.size(); i++) str += "," + to_string(in[i]);
-    return str;
-  }
+//  public:
+//   // Encodes a tree to a single string.
+//   string serialize(TreeNode *root) {
+//     if (!root) return "";
+//     vector<int> pre, in;
+//     preorder(root, pre);
+//     inorder(root, in);
+//     string str;
+//     str += to_string(pre[0]);
+//     for (int i = 1; i < pre.size(); i++) str += "," + to_string(pre[i]);
+//     str += '*';
+//     str += to_string(in[0]);
+//     for (int i = 1; i < in.size(); i++) str += "," + to_string(in[i]);
+//     return str;
+//   }
 
-  TreeNode *buildTree(vector<int> &pre, vector<int> &in, int pstart, int pend,
-                      int istart, int iend) {
-    if (pstart > pend || istart > iend) return nullptr;
+//   TreeNode *buildTree(vector<int> &pre, vector<int> &in, int pstart, int
+//   pend,
+//                       int istart, int iend) {
+//     if (pstart > pend || istart > iend) return nullptr;
 
-    TreeNode *root = new TreeNode(pre[pstart]);
+//     TreeNode *root = new TreeNode(pre[pstart]);
 
-    int index = istart;
-    for (int i = istart; i <= iend; i++) {
-      if (in[i] == pre[pstart]) {
-        index = i;
-        break;
-      }
-    }
+//     int index = istart;
+//     for (int i = istart; i <= iend; i++) {
+//       if (in[i] == pre[pstart]) {
+//         index = i;
+//         break;
+//       }
+//     }
 
-    root->left = buildTree(pre, in, pstart + 1, pstart + index - istart, istart,
-                           index - 1);
-    root->right =
-        buildTree(pre, in, pstart + index - istart + 1, pend, index + 1, iend);
+//     root->left = buildTree(pre, in, pstart + 1, pstart + index - istart,
+//     istart,
+//                            index - 1);
+//     root->right =
+//         buildTree(pre, in, pstart + index - istart + 1, pend, index + 1,
+//         iend);
 
-    return root;
-  }
+//     return root;
+//   }
 
-  vector<int> split(string str) {
-    int pos;
-    vector<int> vec;
-    while ((pos = str.find(',')) >= 0) {
-      vec.push_back(stoi(str.substr(0, pos)));
-      str = str.substr(pos + 1);
-    }
-    vec.push_back(stoi(str));
-    return vec;
-  }
+//   vector<int> split(string str) {
+//     int pos;
+//     vector<int> vec;
+//     while ((pos = str.find(',')) >= 0) {
+//       vec.push_back(stoi(str.substr(0, pos)));
+//       str = str.substr(pos + 1);
+//     }
+//     vec.push_back(stoi(str));
+//     return vec;
+//   }
 
-  // Decodes your encoded data to tree.
-  TreeNode *deserialize(string data) {
-    if (data.empty()) return nullptr;
-    int pos = data.find('*');
-    string pre = data.substr(0, pos);
-    string in = data.substr(pos + 1);
-    vector<int> prevec, invec;
-    prevec = split(pre);
-    invec = split(in);
+//   // Decodes your encoded data to tree.
+//   TreeNode *deserialize(string data) {
+//     if (data.empty()) return nullptr;
+//     int pos = data.find('*');
+//     string pre = data.substr(0, pos);
+//     string in = data.substr(pos + 1);
+//     vector<int> prevec, invec;
+//     prevec = split(pre);
+//     invec = split(in);
 
-    return buildTree(prevec, invec, 0, prevec.size() - 1, 0, invec.size() - 1);
-  }
-};
+//     return buildTree(prevec, invec, 0, prevec.size() - 1, 0, invec.size() -
+//     1);
+//   }
+// };
 
 // class Solution {
 //  private:
@@ -284,6 +288,97 @@ class Solution2 {
     return helper(postorder, 0, postorder.size() - 1);
   }
 };
-}  // namespace leetcode
+
+class Codec {
+ public:
+  void preTraverse(TreeNode *root, vector<int> &vec) {
+    if (root == nullptr) return;
+    vec.push_back(root->val);
+    preTraverse(root->left, vec);
+    preTraverse(root->right, vec);
+  }
+  void inTraverse(TreeNode *root, vector<int> &vec) {
+    if (root == nullptr) return;
+    inTraverse(root->left, vec);
+    vec.push_back(root->val);
+    inTraverse(root->right, vec);
+  }
+
+  string vec2str(vector<int> &vec) {
+    if (vec.empty()) return "";
+    if (vec.size() == 1) return to_string(vec[0]);
+    string str;
+    str += to_string(vec[0]);
+    for (int i = 1; i < vec.size(); i++) {
+      str += "," + to_string(vec[i]);
+    }
+    return str;
+  }
+
+  vector<int> str2vec(string str) {
+    vector<int> vec;
+    if (str.empty()) return vec;
+    int pos;
+    while ((pos = str.find(',')) > 0) {
+      vec.push_back(stoi(str.substr(0, pos)));
+      str = str.substr(pos + 1);
+    }
+    vec.push_back(stoi(str));
+    return vec;
+  }
+
+  TreeNode *build(vector<int> &pre, vector<int> &in, int pstart, int pend,
+                  int istart, int iend) {
+    if (istart > iend) return nullptr;
+    int value = pre[pstart];
+    int index = istart;
+    for (int i = istart; i <= iend; i++) {
+      if (in[i] == value) {
+        index = i;
+        break;
+      }
+    }
+
+    TreeNode *root = new TreeNode(value);
+    root->left =
+        build(pre, in, pstart + 1, pstart + index - istart, istart, index - 1);
+    root->right =
+        build(pre, in, pstart + index - istart + 1, pend, index + 1, iend);
+    return root;
+  }
+
+ public:
+  // Encodes a tree to a single string.
+  string serialize(TreeNode *root) {
+    if (root == nullptr) return "*";
+    vector<int> preOrder;
+    vector<int> inOrder;
+    preTraverse(root, preOrder);
+    inTraverse(root, inOrder);
+    string pre = vec2str(preOrder);
+    string in = vec2str(inOrder);
+    return pre + '*' + in;
+  }
+
+  // Decodes your encoded data to tree.
+  TreeNode *deserialize(string data) {
+    string pre, in;
+    int pos = data.find('*');
+    pre = data.substr(0, pos);
+    in = data.substr(pos + 1);
+    if (pre.empty()) return nullptr;
+    auto preOrder = str2vec(pre);
+    auto inOrder = str2vec(in);
+
+    for (int i = 0; i < preOrder.size(); i++) cout << preOrder[i] << endl;
+    cout << endl;
+    for (int i = 0; i < inOrder.size(); i++) cout << inOrder[i] << endl;
+
+    return build(preOrder, inOrder, 0, preOrder.size() - 1, 0,
+                 inOrder.size() - 1);
+  }
+};
+
+}  // namespace binarytree
 
 #endif

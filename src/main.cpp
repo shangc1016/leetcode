@@ -34,6 +34,14 @@ using namespace design;
 
 using namespace bipointer;
 
+using namespace binarytree;
+
 int main(int argc, char** argv) {
-  
+  Codec codec;
+  auto tree = codec.deserialize("-1,0,1*0,-1,1");
+
+  auto vec = codec.str2vec("1,-1,2,3,-234");
+  cout << endl;
+  for (auto item : vec) cout << item << endl;
+  delete tree;
 }
