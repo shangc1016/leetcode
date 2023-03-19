@@ -5,10 +5,12 @@
 #include <string>
 #include <vector>
 
+#include "../binarytree/binarytree.h"
+
+using namespace binarytree;
 using namespace std;
 
-namespace leetcode {
-
+namespace dp {
 int fib(int n);
 
 int climbStairs(int n);
@@ -52,5 +54,11 @@ int translateNum(int num);
 int lengthOfLongestSubstring(string s);
 
 int cuttingRope(int n);
-}  // namespace leetcode
+
+int rob(vector<int>& nums);
+
+int rob(TreeNode* root);
+
+int maxProfit(vector<int>& prices);
+}  // namespace dp
 #endif

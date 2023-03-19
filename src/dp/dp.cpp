@@ -1,6 +1,7 @@
 #include "dp.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <string>
@@ -8,7 +9,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace leetcode {
+namespace dp {
 
 int fib(int n) {
   vector<int> dp(n + 2, 0);
@@ -433,16 +434,17 @@ bool wordBreak(string s, vector<string>& wordDict) {
 
 // 股票只能卖一次
 // dp[i]表示的是i天以及以前的最低价
-int maxProfit(vector<int>& prices) {
-  int max_val = 0;
-  int minPrice = INT32_MAX;
-  int lastMinPrice = prices[0];
-  for (int i = 1; i < prices.size(); i++) {
-    minPrice = lastMinPrice <= prices[i] ? lastMinPrice : prices[i];
-    max_val = prices[i] - minPrice > max_val ? (prices[i] - minPrice) : max_val;
-  }
-  return max_val;
-}
+// int maxProfit(vector<int>& prices) {
+//   int max_val = 0;
+//   int minPrice = INT32_MAX;
+//   int lastMinPrice = prices[0];
+//   for (int i = 1; i < prices.size(); i++) {
+//     minPrice = lastMinPrice <= prices[i] ? lastMinPrice : prices[i];
+//     max_val = prices[i] - minPrice > max_val ? (prices[i] - minPrice) :
+//     max_val;
+//   }
+//   return max_val;
+// }
 
 vector<int> countBits(int n) {
   // 记dp[i]表示i的二进制表示中1的个数
@@ -526,4 +528,190 @@ int cuttingRope(int n) {
   return dp[n];
 }
 
-}  // namespace leetcode
+// dp[i]表示偷窃i房间的收益
+// 初始化dp[0] = nums[0];
+// dp[1] = nums[1];
+// 递推公式: dp[i] = max(dp[i-2] + nums[i], dp[i-1])
+// dp[i-2] + nums[i]表示偷前面第二个以及当前这个
+// dp[i-1]表示当前这个不偷，所以状态和前一个一致
+
+int robRange(vector<int>& nums, int start, int end) {
+  if (start == end) return nums[start];
+  vector<int> dp(nums.size(), 0);
+  dp[start] = nums[start];
+  dp[start + 1] = nums[start + 1];
+  for (int i = start + 2; i <= end; i++) {
+    dp[i] = max(dp[i - 2] + nums[i], dp[i - 1]);
+  }
+  return dp[end];
+}
+int rob1(vector<int>& nums) {
+  if (nums.empty()) return 0;
+  if (nums.size() == 1) return nums[0];
+  int discardHead = robRange(nums, 1, nums.size() - 1);
+  int discardTail = robRange(nums, 0, nums.size() - 2);
+  return max(discardHead, discardTail);
+}
+
+int rob(vector<int>& nums) {
+  if (nums.empty()) return 0;
+  if (nums.size() == 1) return nums[0];
+  vector<int> dp(nums.size(), 0);
+  dp[0] = nums[0];
+  dp[1] = max(nums[0], nums[1]);
+  for (int i = 2; i < nums.size(); i++) {
+    dp[i] = max(dp[i - 2] + nums[i], dp[i - 1]);
+  }
+  return dp[nums.size() - 1];
+}
+
+// dp[2]
+// dp[0]:不打劫这个房间的收益
+// dp[1]:打劫这个房间的收益
+
+vector<int> rob_helper(TreeNode* root) {
+  if (!root) return {0, 0};
+  if (!root->left && !root->right) return {0, root->val};
+  auto left = rob_helper(root->left);
+  auto right = rob_helper(root->right);
+  return {max(left[0], left[1]) + max(right[0], right[1]),
+          left[0] + right[0] + root->val};
+}
+
+int rob(TreeNode* root) {
+  auto vec = rob_helper(root);
+  return max(vec[0], vec[1]);
+}
+
+// int maxProfit(vector<int>& prices) {
+//   if (prices.size() <= 1) return 0;
+//   vector<int> profit(prices.size() - 1, 0);
+//   for (int i = 0; i < prices.size() - 1; i++) {
+//     profit[i] = prices[i + 1] - prices[i];
+//   }
+
+//   vector<int> dp(profit.size(), 0);
+//   dp[0] = max(0, profit[0]);
+//   int max_profit = dp[0];
+//   for (int i = 1; i < profit.size(); i++) {
+//     dp[i] = max(dp[i - 1] + profit[i], profit[i]);
+//     if (max_profit < dp[i]) max_profit = dp[i];
+//   }
+//   return max_profit;
+// }
+
+// dp[i][0]表示第i天持有股票的最大现金
+// dp[i][1]表示第i天不持有股票的最大现金
+
+// dp[i][0] = max(dp[i-1][0], -price[i]) :
+// 要么是前一天已经是持有股票状态了，要么今天买入股票，金额减少prices[i]
+
+// dp[i][1] = max(dp[i-1][1], prices[i] + dp[i-1][0])
+// 要么前一天没有持有股票，要么今天卖出股票，那么当前最新持有的现金等于前一天持有股票的金额加上今天卖出股票的金额
+int maxProfitI(vector<int>& prices) {
+  if (prices.size() <= 1) return 0;
+  vector<vector<int>> dp(prices.size(), vector<int>(2, 0));
+  dp[0][0] = -prices[0];
+
+  for (int i = 1; i < prices.size(); i++) {
+    dp[i][0] = max(dp[i - 1][0], -prices[i]);
+    dp[i][1] = max(dp[i - 1][1], prices[i] + dp[i - 1][0]);
+  }
+  return max(dp[0][prices.size() - 1], dp[1][prices.size() - 1]);
+}
+
+// 买卖股票、可以任意买卖，不限制交易次数
+
+// dp[i][0]：表示第i天持有股票的利润
+// dp[i][1]：表示第i天不持有股票的利润
+
+// 第i天持有股票的金额，有两种可能，前一天已经持有股票了dp[i-1][0]
+// 或者是今天买入股票，金额等于前一天没买的金额减去今天购买股票的金额dp[i-1][1]-
+// prices[i]
+
+// dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i])
+
+// 第i天没有持有股票的金额，有两种可能，前一天没有持有股票，dp[i-1][1]
+// 或者前一天持有股票，今天卖出股票dp[i-1][0] + prices[i]
+
+// dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])
+
+// 随意交易次数
+int maxProfitII(vector<int>& prices) {
+  if (prices.size() <= 1) return 0;
+  vector<vector<int>> dp(prices.size(), vector<int>(2, 0));
+  dp[0][0] = -prices[0];
+
+  for (int i = 1; i < prices.size(); i++) {
+    dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+    dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] + prices[i]);
+  }
+  int sz = prices.size() - 1;
+  return max(dp[sz][0], dp[sz][1]);
+}
+
+// 只能交易两次
+int maxProfi2(vector<int>& prices) {
+  if (prices.size() <= 4) return 0;
+  vector<vector<int>> dp(prices.size(), vector<int>(5, 0));
+  dp[0][1] = -prices[0];
+  dp[0][3] = -prices[0];
+
+  for (int i = 1; i < prices.size(); i++) {
+    dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+    dp[i][2] = max(dp[i - 1][2], dp[i - 1][1] + prices[i]);
+    dp[i][3] = max(dp[i - 1][3], dp[i - 1][2] - prices[i]);
+    dp[i][4] = max(dp[i - 1][4], dp[i - 1][3] + prices[i]);
+  }
+
+  return dp[prices.size() - 1][4];
+}
+
+// 最多交易k次
+int maxProfit(int k, vector<int>& prices) {
+  if (prices.size() == 0) return 0;
+  vector<vector<int>> dp(prices.size(), vector<int>(2 * k + 1, 0));
+  for (int i = 1; i < 2 * k + 1; i += 2) {
+    dp[0][i] = -prices[0];
+  }
+  for (int i = 1; i < prices.size(); i++) {
+    for (int j = 0; j < k * 2 + 1; j += 2) {
+      dp[i][j + 1] = max(dp[i - 1][j + 1], dp[i - 1][j] - prices[i]);
+      dp[i][j + 2] = max(dp[i - 1][j + 2], dp[i - 1][j + 1] + prices[i]);
+    }
+  }
+  return dp[prices.size() - 1][2 * k];
+}
+
+// 具有一天冷冻期
+int maxProfit(vector<int>& prices) {
+  if (prices.size() == 0) return 0;
+  vector<vector<int>> dp(prices.size(), vector<int>(4));
+
+  dp[0][0] = -prices[0];
+
+  for (int i = 1; i < prices.size(); i++) {
+    dp[i][0] =
+        max({dp[i - 1][0], dp[i - 1][3] - prices[i], dp[i - 1][1] - prices[i]});
+    dp[i][1] = max(dp[i - 1][1], dp[i - 1][3]);
+    dp[i][2] = dp[i - 1][0] + prices[i];
+    dp[i][3] = dp[i - 1][2];
+  }
+  return max({dp[prices.size() - 1][1], dp[prices.size() - 1][2],
+              dp[prices.size() - 1][3]});
+}
+
+
+// 包含手续费
+int maxProfit(vector<int>& prices, int fee) {
+  if (prices.size() == 0) return 0;
+  vector<vector<int>> dp(prices.size(), vector<int>(2, 0));
+  dp[0][0] = -prices[0];
+  for (int i = 1; i < prices.size(); i++) {
+    dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+    dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] + prices[i] - fee);
+  }
+  return dp[prices.size()-1][1];
+}
+
+}  // namespace dp

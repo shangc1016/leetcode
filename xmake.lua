@@ -55,6 +55,11 @@ target("bipointer")
     set_kind("static")
     add_files("src/bipointer/*.cpp")
     
+target("graph")
+    set_kind("static")
+    add_files("src/graph/*.cpp")
+
+
 target("main")
     set_kind("binary")
     add_files("src/main.cpp")
@@ -69,6 +74,7 @@ target("main")
     add_deps("slidewindow")
     add_deps("sword_to_offer")
     add_deps("bipointer")
+    add_deps("graph")
     
 
 target("test")
