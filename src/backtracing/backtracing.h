@@ -479,7 +479,35 @@ namespace leetocde {
 //   }
 // };
 
+class Solution {
+ private:
+  vector<string> result;
+  // string tmp;
 
+  void backtracing(string &s, string tmp, vector<bool> &used) {
+    if (tmp.size() == s.size()) {
+      result.push_back(tmp);
+      return;
+    }
+    for (int i = 0; i < s.size(); i++) {
+      if (used[i]) continue;
+      if (i > 0 && s[i] == s[i - 1] && used[i - 1] == false) continue;
+      tmp.push_back(s[i]);
+      used[i] = true;
+      backtracing(s, tmp, used);
+      tmp.pop_back();
+      used[i] = false;
+    }
+  }
+
+ public:
+  vector<string> permutation(string s) {
+    vector<bool> used(s.size(), false);
+    sort(s.begin(), s.end());
+    backtracing(s, "", used);
+    return result;
+  }
+};
 
 }  // namespace leetocde
 

@@ -3,7 +3,9 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdlib>
 #include <iostream>
+#include <queue>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -290,95 +292,95 @@ class Solution2 {
 };
 
 class Codec {
- public:
-  void preTraverse(TreeNode *root, vector<int> &vec) {
+ private:
+  void levelTraverse(TreeNode *root, vector<string> &vec) {
     if (root == nullptr) return;
-    vec.push_back(root->val);
-    preTraverse(root->left, vec);
-    preTraverse(root->right, vec);
-  }
-  void inTraverse(TreeNode *root, vector<int> &vec) {
-    if (root == nullptr) return;
-    inTraverse(root->left, vec);
-    vec.push_back(root->val);
-    inTraverse(root->right, vec);
+    queue<TreeNode *> queue;
+    queue.push(root);
+    while (!queue.empty()) {
+      auto ptr = queue.front();
+      queue.pop();
+      if (ptr != nullptr) {
+        queue.push(ptr->left);
+        queue.push(ptr->right);
+        vec.push_back(to_string(ptr->val));
+      } else {
+        vec.push_back("*");
+      }
+    }
   }
 
-  string vec2str(vector<int> &vec) {
-    if (vec.empty()) return "";
-    if (vec.size() == 1) return to_string(vec[0]);
+  string vec2str(vector<string> &vec) {
+    // while (vec.back() == "-") vec.pop_back();
     string str;
-    str += to_string(vec[0]);
+    str += vec[0];
     for (int i = 1; i < vec.size(); i++) {
-      str += "," + to_string(vec[i]);
+      str += ("," + vec[i]);
     }
     return str;
   }
 
-  vector<int> str2vec(string str) {
-    vector<int> vec;
-    if (str.empty()) return vec;
+  vector<string> str2vec(string &str) {
+    vector<string> vec;
     int pos;
-    while ((pos = str.find(',')) > 0) {
-      vec.push_back(stoi(str.substr(0, pos)));
+    while ((pos = str.find(',')) != -1) {
+      vec.push_back(str.substr(0, pos));
       str = str.substr(pos + 1);
     }
-    vec.push_back(stoi(str));
+    vec.push_back(str);
     return vec;
   }
 
-  TreeNode *build(vector<int> &pre, vector<int> &in, int pstart, int pend,
-                  int istart, int iend) {
-    if (istart > iend) return nullptr;
-    int value = pre[pstart];
-    int index = istart;
-    for (int i = istart; i <= iend; i++) {
-      if (in[i] == value) {
-        index = i;
-        break;
+  TreeNode *build(vector<string> &vec) {
+    queue<string> vals;
+    for (auto item : vec) vals.push(item);
+    TreeNode *root = new TreeNode(atoi(vals.front().c_str()));
+    vals.pop();
+
+    ::queue<TreeNode *> queue;
+    queue.push(root);
+
+    while (!queue.empty()) {
+      TreeNode *ptr = queue.front();
+      queue.pop();
+      if (vals.front() == "*") {
+        ptr->left = nullptr;
+        vals.pop();
+      } else {
+        ptr->left = new TreeNode(atoi(vals.front().c_str()));
+        vals.pop();
+        queue.push(ptr->left);
+      }
+
+      if (vals.front() == "*") {
+        ptr->right = nullptr;
+        vals.pop();
+      } else {
+        ptr->right = new TreeNode(atoi(vals.front().c_str()));
+        vals.pop();
+        queue.push(ptr->right);
       }
     }
-
-    TreeNode *root = new TreeNode(value);
-    root->left =
-        build(pre, in, pstart + 1, pstart + index - istart, istart, index - 1);
-    root->right =
-        build(pre, in, pstart + index - istart + 1, pend, index + 1, iend);
     return root;
   }
 
  public:
   // Encodes a tree to a single string.
   string serialize(TreeNode *root) {
-    if (root == nullptr) return "*";
-    vector<int> preOrder;
-    vector<int> inOrder;
-    preTraverse(root, preOrder);
-    inTraverse(root, inOrder);
-    string pre = vec2str(preOrder);
-    string in = vec2str(inOrder);
-    return pre + '*' + in;
+    if (root == nullptr) return "";
+    vector<string> vec;
+    levelTraverse(root, vec);
+    string str = vec2str(vec);
+    return str;
   }
 
   // Decodes your encoded data to tree.
   TreeNode *deserialize(string data) {
-    string pre, in;
-    int pos = data.find('*');
-    pre = data.substr(0, pos);
-    in = data.substr(pos + 1);
-    if (pre.empty()) return nullptr;
-    auto preOrder = str2vec(pre);
-    auto inOrder = str2vec(in);
-
-    for (int i = 0; i < preOrder.size(); i++) cout << preOrder[i] << endl;
-    cout << endl;
-    for (int i = 0; i < inOrder.size(); i++) cout << inOrder[i] << endl;
-
-    return build(preOrder, inOrder, 0, preOrder.size() - 1, 0,
-                 inOrder.size() - 1);
+    if (data.empty()) return nullptr;
+    vector<string> vec = str2vec(data);
+    return build(vec);
   }
 };
-
 }  // namespace binarytree
 
 #endif

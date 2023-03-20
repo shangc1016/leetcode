@@ -516,17 +516,17 @@ int lengthOfLongestSubstring(string s) {
 // dp[1] = 0
 // dp[2] = 1
 // dp[i] = max(dp[i-j] * j, dp[j] * dp[i-j] ...)， j从1到i-1
-int cuttingRope(int n) {
-  vector<int> dp(n + 1, 0);
-  dp[1] = 0;
-  dp[2] = 1;
-  for (int i = 3; i <= n; i++) {
-    for (int j = 1; j <= i - 1; j++) {
-      dp[i] = max({dp[i], dp[i - j] * j, dp[i - j] * dp[j], j * (i - j)});
-    }
-  }
-  return dp[n];
-}
+// int cuttingRope(int n) {
+//   vector<int> dp(n + 1, 0);
+//   dp[1] = 0;
+//   dp[2] = 1;
+//   for (int i = 3; i <= n; i++) {
+//     for (int j = 1; j <= i - 1; j++) {
+//       dp[i] = max({dp[i], dp[i - j] * j, dp[i - j] * dp[j], j * (i - j)});
+//     }
+//   }
+//   return dp[n];
+// }
 
 // dp[i]表示偷窃i房间的收益
 // 初始化dp[0] = nums[0];
@@ -701,7 +701,6 @@ int maxProfit(vector<int>& prices) {
               dp[prices.size() - 1][3]});
 }
 
-
 // 包含手续费
 int maxProfit(vector<int>& prices, int fee) {
   if (prices.size() == 0) return 0;
@@ -711,7 +710,38 @@ int maxProfit(vector<int>& prices, int fee) {
     dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
     dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] + prices[i] - fee);
   }
-  return dp[prices.size()-1][1];
+  return dp[prices.size() - 1][1];
+}
+
+//======= 3.20 =========
+int lengthOfLIS(vector<int>& nums) {
+  if (nums.empty()) return 0;
+  if (nums.size() == 1) return 1;
+  int result = 0;
+  vector<int> dp(nums.size(), 1);
+  dp[0] = 1;
+  for (int i = 1; i < nums.size(); i++) {
+    for (int j = 0; j < i; j++) {
+      if (nums[i] > nums[j]) dp[i] = max(dp[i], dp[j] + 1);
+    }
+    if (dp[i] > result) result = dp[i];
+  }
+  return result;
+}
+
+int minPathSum(vector<vector<int>>& grid) {
+  int h = grid.size();
+  int w = grid[0].size();
+  vector<vector<int>> dp(h, vector<int>(w, 0));
+  dp[0][0] = grid[0][0];
+  for (int i = 1; i < h; i++) dp[i][0] = dp[i - 1][0] + grid[i][0];
+  for (int i = 1; i < w; i++) dp[0][i] = dp[0][i - 1] + grid[0][i];
+  for (int i = 1; i < h; i++) {
+    for (int j = 1; j < w; j++) {
+      dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+    }
+  }
+  return dp[h - 1][w - 1];
 }
 
 }  // namespace dp

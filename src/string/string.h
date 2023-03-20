@@ -31,59 +31,118 @@ int containE(string str);
 
 int strToInt(string str);
 
+// class Solution {
+//  private:
+//   string TrimFront(string str) {
+//     if (str.empty()) return str;
+//     int cur = 0;
+//     while (str[cur] == ' ') cur++;
+//     if (cur >= str.size()) return "";
+//     return str.substr(cur);
+//   }
+
+//   string DiscardTail(string str) {
+//     if (str.empty()) return str;
+//     int cur = 0;
+//     while (str[cur] == '+' || str[cur] == '-' ||
+//            ('0' <= str[cur] && str[cur] <= '9'))
+//       cur++;
+//     if (cur >= str.size()) return str;
+//     return str.substr(0, cur);
+//   }
+
+//   uint64_t Convert(string str, int signal) {
+//     uint64_t value = 0;
+//     for (int i = 0; i < str.size(); i++) {
+//       if (!('0' <= str[i] && str[i] <= '9')) return -1;
+//       if (signal == 0) {
+//         if (value >= INT32_MAX) return INT32_MAX;
+//         value = value * 10 + (str[i] - '0');
+//       } else if (signal == 1) {
+//         if (value <= INT32_MIN) return INT32_MIN;
+//         value = value * 10 - (str[i] - '0');
+//       }
+//     }
+//     return value;
+//   }
+
+//  public:
+//   int strToInt(string str) {
+//     str = TrimFront(str);
+//     if (str.empty()) return 0;
+//     str = DiscardTail(str);
+//     if (str.empty()) return 0;
+
+//     int signal = 0;
+//     if (str[0] == '-') {
+//       signal = 1;
+//       str = str.substr(1);
+//     } else if (str[0] == '+') {
+//       str = str.substr(1);
+//     }
+
+//     uint64_t value = Convert(str, signal);
+
+//     return value;
+//   }
+// };
+
 class Solution {
  private:
-  string TrimFront(string str) {
-    if (str.empty()) return str;
-    int cur = 0;
-    while (str[cur] == ' ') cur++;
-    if (cur >= str.size()) return "";
-    return str.substr(cur);
-  }
-
-  string DiscardTail(string str) {
-    if (str.empty()) return str;
-    int cur = 0;
-    while (str[cur] == '+' || str[cur] == '-' ||
-           ('0' <= str[cur] && str[cur] <= '9'))
-      cur++;
-    if (cur >= str.size()) return str;
-    return str.substr(0, cur);
-  }
-
-  uint64_t Convert(string str, int signal) {
-    uint64_t value = 0;
-    for (int i = 0; i < str.size(); i++) {
-      if (!('0' <= str[i] && str[i] <= '9')) return -1;
-      if (signal == 0) {
-        if (value >= INT32_MAX) return INT32_MAX;
-        value = value * 10 + (str[i] - '0');
-      } else if (signal == 1) {
-        if (value <= INT32_MIN) return INT32_MIN;
-        value = value * 10 - (str[i] - '0');
-      }
+  struct Node {
+    char ch_;
+    bool is_end_{false};
+    Node* next_[26];
+    Node(char ch) : ch_(ch) {
+      for (int i = 0; i < 26; i++) next_[i] = nullptr;
     }
-    return value;
+  };
+
+  Node* root_{nullptr};
+
+  void NewTrimTree() { root_ = new Node('\0'); }
+
+  void InsertTrim(string str) {
+    Node* ptr = root_;
+    while (str.size() > 0) {
+      if (ptr->next_[str[0] - '0'] == nullptr) {
+        ptr->next_[str[0] - '0'] = new Node(str[0] - '0');
+      }
+      ptr = ptr->next_[str[0] - '0'];
+      str = str.substr(1);
+    }
+    ptr->is_end_ = true;
+  }
+
+  void FindPrefix(string& prefix) {
+    Node* ptr = root_;
+
+    Node* next;
+    while (true) {
+      int count = 0;
+      for (int i = 0; i < 25; i++) {
+        if (ptr->next_[i] != nullptr) {
+          count++;
+          next = ptr->next_[i];
+        }
+      }
+      if (count == 1) {
+        ptr = next;
+        prefix += (ptr->ch_ + 'a');
+      } else {
+        return;
+      }
+      if (ptr->is_end_) return;
+    }
   }
 
  public:
-  int strToInt(string str) {
-    str = TrimFront(str);
-    if (str.empty()) return 0;
-    str = DiscardTail(str);
-    if (str.empty()) return 0;
-
-    int signal = 0;
-    if (str[0] == '-') {
-      signal = 1;
-      str = str.substr(1);
-    } else if (str[0] == '+') {
-      str = str.substr(1);
-    }
-
-    uint64_t value = Convert(str, signal);
-
-    return value;
+  string longestCommonPrefix(vector<string>& strs) {
+    NewTrimTree();
+    for (auto str : strs) InsertTrim(str);
+    string prefix;
+    FindPrefix(prefix);
+    return prefix;
   }
 };
 
