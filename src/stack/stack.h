@@ -5,7 +5,6 @@
 #include <stack>
 #include <string>
 
-
 using namespace std;
 
 namespace leetcode {
@@ -21,8 +20,10 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k);
 
 vector<int> topKFrequent(vector<int>& nums, int k);
 
-    // 用栈实现队列
-    class MyQueue {
+int longestValidParentheses(string s);
+
+// 用栈实现队列
+class MyQueue {
  private:
   std::stack<int> stack1;
   std::stack<int> stack2;

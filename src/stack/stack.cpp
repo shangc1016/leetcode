@@ -149,4 +149,22 @@ vector<int> topKFrequent(vector<int>& nums, int k) {
   return vec;
 }
 
+int longestValidParentheses(string s) {
+  stack<char> stack;
+  int sz = s.size();
+  for (int i = 0; i < sz; i++) {
+    if (s[i] == '(')
+      stack.push(s[i]);
+    else if (s[i] == ')') {
+      if (stack.top() == '(') {
+        stack.pop();
+      }
+      else {
+        stack.push(')');
+      }
+    }
+  }
+  return sz - stack.size();
+}
+
 }  // namespace leetcode

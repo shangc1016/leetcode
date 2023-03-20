@@ -59,6 +59,9 @@ target("graph")
     set_kind("static")
     add_files("src/graph/*.cpp")
 
+target("sort")
+    set_kind("static")
+    add_files("src/sort/*.cpp")    
 
 target("main")
     set_kind("binary")

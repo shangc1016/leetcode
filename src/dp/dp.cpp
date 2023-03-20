@@ -744,4 +744,15 @@ int minPathSum(vector<vector<int>>& grid) {
   return dp[h - 1][w - 1];
 }
 
+int maxProduct(vector<int>& nums) {
+  vector<int> dp(nums.size(), 0);
+  dp[0] = nums[0];
+  int max_val = dp[0];
+  for (int i = 1; i < nums.size(); i++) {
+    dp[i] = dp[i - 1] * nums[i] > nums[i] ? dp[i - 1] * nums[i] : nums[i];
+    max_val = max(max_val, dp[i]);
+  }
+  return max_val;
+}
+
 }  // namespace dp

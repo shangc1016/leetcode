@@ -62,5 +62,7 @@ int rob(TreeNode* root);
 int maxProfit(vector<int>& prices);
 
 int lengthOfLIS(vector<int>& nums);
+
+int maxProduct(vector<int>& nums);
 }  // namespace dp
 #endif

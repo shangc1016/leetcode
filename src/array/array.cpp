@@ -76,4 +76,40 @@ vector<int> constructArr(vector<int>& a) {
   return left2right;
 }
 
+vector<int> productExceptSelf(vector<int>& nums) {
+  vector<int> left2right(nums.size(), 1);
+  vector<int> right2left(nums.size(), 1);
+
+  for (int i = 1; i < nums.size(); i++) {
+    left2right[i] = left2right[i - 1] * nums[i - 1];
+  }
+  for (int i = nums.size() - 2; i >= 0; i--) {
+    right2left[i] = right2left[i + 1] * nums[i + 1];
+  }
+  for (int i = 0; i < nums.size(); i++) {
+    left2right[i] *= right2left[i];
+  }
+  return left2right;
+}
+
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+  if (target < matrix[0][0]) return false;
+  int h = matrix.size();
+  int w = matrix[0].size();
+  if (target > matrix[h - 1][w - 1]) return false;
+
+  int row = h - 1;
+  int col = 0;
+  while (row >= 0 && col < w) {
+    if (target > matrix[row][col]) {
+      col++;
+    } else if (target < matrix[row][col]) {
+      row--;
+    } else {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace leetcode
