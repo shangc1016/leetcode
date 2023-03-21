@@ -186,4 +186,46 @@ int strToInt(string str) {
     return INT32_MAX;
 }
 
+
+string TrimFront(string str) {
+  if (str.empty()) return str;
+  while (str[0] == ' ') str = str.substr(1);
+  return str;
+}
+
+int myAtoi(string s) {
+  // step1
+  s = TrimFront(s);
+  cout << "after trim:" << s << endl;
+  int signal = 0;
+  if (s[0] == '-') {
+    signal = 1;
+    s = s.substr(1);
+  } else if (s[0] == '+') {
+    s = s.substr(1);
+  }
+  int index = 0;
+  for (int i = 0; i < s.size(); i++) {
+    if (!('0' <= s[i] && s[i] <= '9')) {
+      index = i;
+      break;
+    }
+  }
+  if (index != 0) {
+    s = s.substr(0, index);
+  }
+
+  int64_t value = 0;
+  int64_t int32min = INT32_MIN;
+  int64_t int32max = INT32_MAX;
+  while (!s.empty()) {
+    value = value * 10 + (s[0] - '0');
+    s = s.substr(1);
+    if (signal == 1 && value >= -int32min) return INT32_MIN;
+    if (signal == 0 && value >= int32max) return INT32_MAX;
+  }
+  if (signal == 1) return -value;
+  return value;
+}
+
 }  // namespace mystring

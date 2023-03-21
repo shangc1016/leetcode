@@ -64,5 +64,19 @@ int maxProfit(vector<int>& prices);
 int lengthOfLIS(vector<int>& nums);
 
 int maxProduct(vector<int>& nums);
+
+int findLengthOfLCIS(vector<int>& nums);
+
+int findLength(vector<int>& nums1, vector<int>& nums2);
+
+int longestCommonSubsequence(string text1, string text2);
+
+int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2);
+
+int maxSubArray(vector<int>& nums);
+
+bool isSubsequence(string s, string t);
+
+int numDistinct(string s, string t);
 }  // namespace dp
 #endif

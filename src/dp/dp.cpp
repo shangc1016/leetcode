@@ -719,7 +719,7 @@ int lengthOfLIS(vector<int>& nums) {
   if (nums.size() == 1) return 1;
   int result = 0;
   vector<int> dp(nums.size(), 1);
-  dp[0] = 1;
+
   for (int i = 1; i < nums.size(); i++) {
     for (int j = 0; j < i; j++) {
       if (nums[i] > nums[j]) dp[i] = max(dp[i], dp[j] + 1);
@@ -753,6 +753,120 @@ int maxProduct(vector<int>& nums) {
     max_val = max(max_val, dp[i]);
   }
   return max_val;
+}
+
+int findLengthOfLCIS(vector<int>& nums) {
+  if (nums.empty()) return 0;
+  if (nums.size() == 1) return 1;
+  vector<int> dp(nums.size(), 1);
+  int result = 0;
+  for (int i = 1; i < nums.size(); i++) {
+    if (nums[i] > nums[i - 1]) dp[i]++;
+    result = max(result, dp[i]);
+  }
+  return result;
+}
+
+// dp问题，dp[i][j]表示在数组nums1中以i-1结尾的子串，在数组nums2中以j-1结尾的子串中，公共最长子数组的长度
+// 如果nums1[i] == nums2[j] ，那么dp[i][j] = dp[i-1][j-1] + 1
+// 初始化dp[0][0] = 0
+int findLength(vector<int>& nums1, vector<int>& nums2) {
+  vector<vector<int>> dp(nums1.size(), vector<int>(nums2.size(), 0));
+  int result = 0;
+  for (int i = 1; i <= nums1.size(); i++) {
+    for (int j = 1; j <= nums2.size(); j++) {
+      if (nums1[i - 1] == nums2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      }
+      if (dp[i][j] > result) result = dp[i][j];
+    }
+  }
+  return result;
+}
+
+// dp[i][j]表示在text1中前面0到i-1的子串中，以及在text2中前面0到j-1的子串中，具有的最长公共子序列的长度。
+int longestCommonSubsequence(string text1, string text2) {
+  vector<vector<int>> dp(text1.size() + 1, vector<int>(text2.size() + 1, 0));
+  for (int i = 1; i <= text1.size(); i++) {
+    for (int j = 1; j <= text2.size(); j++) {
+      if (text1[i - 1] == text2[j - 1])
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      else {
+        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+  }
+  return dp[text1.size()][text2.size()];
+}
+
+// dp[i][j]表示前一个数组的前i-1个范围内，后一个数组j-1的范围内，最大的公共非连续前缀是dp[i][j]
+int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+  int sz1 = nums1.size();
+  int sz2 = nums2.size();
+  vector<vector<int>> dp(sz1 + 1, vector<int>(sz2 + 1, 0));
+
+  for (int i = 1; i <= sz1; i++) {
+    for (int j = 1; j <= sz2; j++) {
+      if (nums1[i - 1] == nums2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+  }
+  return dp[sz1][sz2];
+}
+
+// dp[i]表示以i结尾的最大子数组和为dp[i]
+int maxSubArray(vector<int>& nums) {
+  vector<int> dp(nums.size(), 0);
+  dp[0] = nums[0];
+  int reslut = dp[0];
+  for (int i = 1; i < nums.size(); i++) {
+    dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+    reslut = max(dp[i], reslut);
+  }
+  return reslut;
+}
+
+// dp[i][j]表示s中前i-1的子串和t中j-1的子串的相同序列个数，可以不连续
+bool isSubsequence(string s, string t) {
+  int sz1 = s.size();
+  int sz2 = t.size();
+
+  vector<vector<int>> dp(sz1 + 1, vector<int>(sz2 + 1, 0));
+  for (int i = 1; i <= sz1; i++) {
+    for (int j = 1; j <= sz2; j++) {
+      if (s[i - 1] == t[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      } else {
+        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+  }
+  return sz1 == dp[sz1][sz2];
+}
+
+// 计算t在s的子序列中出现的次数
+// s=rabbit，t=rabbbit，就返回3
+// dp[i][j]表示在s中的前i-1的子串和t中j-1的子串之间的匹配子串数
+// if(dp[i][j] == dp[i-1][j-1]) dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+// else dp[i][j] = dp[i-1][j]
+int numDistinct(string s, string t) {
+  uint64_t sz1 = s.size();
+  uint64_t sz2 = t.size();
+  vector<vector<uint64_t>> dp(sz1 + 1, vector<uint64_t>(sz2 + 1, 0));
+  for (uint64_t i = 0; i < sz1; i++) dp[i][0] = 1;
+  for (uint64_t i = 1; i <= sz1; i++) {
+    for (uint64_t j = 1; j <= sz2; j++) {
+      if (s[i - 1] == t[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+      } else {
+        dp[i][j] = dp[i - 1][j];
+      }
+    }
+  }
+  return dp[sz1][sz2];
 }
 
 }  // namespace dp

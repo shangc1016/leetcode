@@ -31,6 +31,8 @@ int containE(string str);
 
 int strToInt(string str);
 
+int myAtoi(string s);
+
 // class Solution {
 //  private:
 //   string TrimFront(string str) {

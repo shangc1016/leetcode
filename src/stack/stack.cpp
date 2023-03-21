@@ -156,10 +156,9 @@ int longestValidParentheses(string s) {
     if (s[i] == '(')
       stack.push(s[i]);
     else if (s[i] == ')') {
-      if (stack.top() == '(') {
+      if (!stack.empty() && stack.top() == '(') {
         stack.pop();
-      }
-      else {
+      } else {
         stack.push(')');
       }
     }

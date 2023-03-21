@@ -28,12 +28,8 @@
 #include "tree/tree.h"
 
 using namespace std;
-// using namespace leetcode;
-
 using namespace design;
-
 using namespace bipointer;
-
 using namespace binarytree;
 
 int main(int argc, char** argv) {}
