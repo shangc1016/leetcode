@@ -23,6 +23,7 @@
 #include "hash/hash.h"
 #include "list/list.h"
 #include "slidewindow/slidewindow.h"
+#include "sort/sort.h"
 #include "stack/stack.h"
 #include "string/string.h"
 #include "tree/tree.h"
@@ -32,4 +33,14 @@ using namespace design;
 using namespace bipointer;
 using namespace binarytree;
 
-int main(int argc, char** argv) {}
+using namespace sort;
+
+int main(int argc, char** argv) {
+  vector<int> nums = {3, 12, 34, 23, 4, 234, 23, 45, 2};
+  QuickSort::quickSort(nums);
+  for (int val : nums) {
+    cout << val << endl;
+  }
+
+  cout << findKthLargest(nums, 1) << endl;
+}

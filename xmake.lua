@@ -78,6 +78,8 @@ target("main")
     add_deps("sword_to_offer")
     add_deps("bipointer")
     add_deps("graph")
+    add_deps("sort")
+    
     
 
 target("test")
@@ -86,6 +88,7 @@ target("test")
     add_packages("lpthread")
     add_packages("gtest")
     add_deps("string")
+    add_deps("sort")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

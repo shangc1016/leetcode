@@ -435,6 +435,46 @@ class MedianFinder {
 //   }
 // };
 
+class RingQueue {
+ private:
+  vector<int> list_;
+  int size_;
+  int head_;
+  int tail_;
+  int capacity_;
+
+ public:
+  RingQueue(int capacity) {
+    capacity_ = capacity;
+    head_ = 0;
+    tail_ = 0;
+    size_ = 0;
+  }
+
+  bool Insert(int value) {
+    if (size_ == capacity_) return false;
+    list_[tail_] = value;
+    tail_ = (tail_ + 1) % capacity_;
+    size_++;
+    cout << "tail = " << tail_ << endl;
+    return true;
+  }
+
+  void Pop() {
+    if (size_ == 0) return;
+    head_ = (head_ + 1) % capacity_;
+    size_--;
+  }
+
+  bool Empty() { return size_ == 0; }
+
+  int Size() { return size_; }
+
+  int front() {
+    if (!Empty()) return list_[head_];
+    return -1;
+  }
+};
 
 }  // namespace design
 

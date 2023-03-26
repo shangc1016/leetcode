@@ -7,6 +7,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 #include <string>
 #include <utility>
 #include <vector>
@@ -87,6 +88,7 @@ ListNode* mergeTwoLists(ListNode* l1, ListNode* l2);
 ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
 
 string printBin(double num);
+
 }  // namespace leetcode
 
 #endif
