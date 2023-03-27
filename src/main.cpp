@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
@@ -5,10 +6,12 @@
 #include <functional>
 #include <iostream>
 #include <iterator>
+#include <list>
 #include <map>
 #include <memory>
 #include <ostream>
 #include <queue>
+#include <random>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -35,12 +38,41 @@ using namespace binarytree;
 
 using namespace sort;
 
+bool cmp(int a, int b) { return a > b; }
+
+int GetRandInt(int min_, int max_) {
+  std::random_device rd;
+  std::mt19937 rng(rd());
+  std::uniform_int_distribution<int> uni(min_, max_);
+  auto random_integer = uni(rng);
+  return random_integer;
+}
+
 int main(int argc, char** argv) {
-  vector<int> nums = {3, 12, 34, 23, 4, 234, 23, 45, 2};
-  QuickSort::quickSort(nums);
-  for (int val : nums) {
-    cout << val << endl;
+  //
+  //
+  //
+
+  const int length = 100;
+  const int max_ = 10000;
+  const int min_ = -10000;
+
+  vector<int> nums;
+  vector<int> copy;
+
+  for (int i = 0; i < length; i++) {
+    int num = GetRandInt(min_, max_);
+    nums.push_back(num);
+    copy.push_back(num);
   }
 
-  cout << findKthLargest(nums, 1) << endl;
+  ShuffleQuickSort<int>::QuickSort(nums);
+
+  std::sort(copy.begin(), copy.end());
+
+  for (int i = 0; i < length; i++) {
+    if (nums[i] != copy[i]) {
+      cout << "err" << endl;
+    }
+  }
 }

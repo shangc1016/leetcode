@@ -4,7 +4,7 @@
 - 堆排序，排序开销小
 
 
-#### 快排
+### 快排
 
 ```cpp
 class QuickSort {
@@ -39,3 +39,49 @@ class QuickSort {
   }
 };
 ```
+
+快排有个问题，如果数组基本有序。那么复杂度近似为`O(n^2)`。
+需要改进的点在于，随机选择相比较的元素
+
+
+### pivot枢轴随机选择的快排
+```cpp
+template <class Key>
+class ShuffleQuickSort {
+ private:
+  static int partition(vector<Key>& vec, int low, int high) {
+    int i = low;
+    int j = high + 1;
+    int value = vec[low];
+    while (true) {
+      while (vec[++i] < value) {
+        if (i == high) break;
+      }
+      while (value < vec[--j]) {
+        if (j == low) break;
+      }
+      if (i >= j) break;
+      std::swap(vec[i], vec[j]);
+    }
+    std::swap(vec[low], vec[j]);
+    return j;
+  }
+
+  static int random_partition(vector<Key>& vec, int low, int high) {
+    int rand = std::rand() % (high - low + 1) + low;
+    std::swap(vec[rand], vec[high]);
+    return partition(vec, low, high);
+  }
+  static void quick_sort(vector<Key>& vec, int low, int high) {
+    if (low >= high) return;
+    int pivot = random_partition(vec, low, high);
+    quick_sort(vec, low, pivot - 1);
+    quick_sort(vec, pivot + 1, high);
+  }
+
+ public:
+  static void QuickSort(vector<Key>& vec) { quick_sort(vec, 0, vec.size() - 1); }
+};
+```
+
+![20230327145534](https://note-img-1300721153.cos.ap-nanjing.myqcloud.com/md-img20230327145534.png)

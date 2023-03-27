@@ -8,6 +8,7 @@
 #include <deque>
 #include <functional>
 #include <iostream>
+#include <list>
 #include <map>
 #include <queue>
 #include <stack>
@@ -470,11 +471,95 @@ class RingQueue {
 
   int Size() { return size_; }
 
-  int front() {
-    if (!Empty()) return list_[head_];
+  int Front() {
+    cout << "head = " << head_ << endl;
+    // if (!Empty()) return list_[head_];
     return -1;
   }
 };
+
+class MyCircularDeque {
+ private:
+  std::list<int> list_;
+  int size_;
+  int capacity_;
+
+ public:
+  MyCircularDeque(int k) {
+    capacity_ = k;
+    size_ = 0;
+    list_.clear();
+  }
+
+  bool insertFront(int value) {
+    if (size_ == capacity_) return false;
+    list_.push_front(value);
+    size_++;
+    return true;
+  }
+
+  bool insertLast(int value) {
+    if (size_ == capacity_) return false;
+    list_.push_back(value);
+    size_++;
+    return true;
+  }
+
+  bool deleteFront() {
+    if (size_ == 0) return false;
+    list_.pop_front();
+    size_--;
+    return true;
+  }
+
+  bool deleteLast() {
+    if (size_ == 0) return false;
+    list_.pop_back();
+    size_--;
+    return true;
+  }
+
+  int getFront() {
+    if (size_ == 0) return -1;
+    return list_.front();
+  }
+
+  int getRear() {
+    if (size_ == 0) return -1;
+    return list_.back();
+  }
+
+  bool isEmpty() { return size_ == 0; }
+
+  bool isFull() { return size_ == capacity_; }
+};
+
+class KthLargest {
+ private:
+  vector<int> vec_;
+  int k_;
+
+  static bool cmp(int a, int b) { return a > b; }
+
+ public:
+  KthLargest(int k, vector<int>& nums) {
+    k_ = k;
+    vec_.insert(vec_.end(), nums.begin(), nums.end());
+    sort(vec_.begin(), vec_.end(), cmp);
+  }
+
+  int add(int val) {
+    vec_.push_back(val);
+    int index = vec_.size() - 1;
+    while (index > 0 && vec_[index] > vec_[index - 1]) {
+      swap(vec_[index], vec_[index - 1]);
+      index--;
+    }
+    return vec_[k_ - 1];
+  }
+};
+
+
 
 }  // namespace design
 

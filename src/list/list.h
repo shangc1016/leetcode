@@ -174,5 +174,42 @@ class Solution111 {
   }
 };
 
+class Solution {
+ private:
+  ListNode* merge(ListNode* list1, ListNode* list2) {
+    if (list1 == nullptr && list2 == nullptr) return nullptr;
+    if (list1 == nullptr) return list2;
+    if (list2 == nullptr) return list1;
+    ListNode* dummy = new ListNode(0);
+    ListNode* ptr = dummy;
+    while (list1 && list2) {
+      if (list1->val < list2->val) {
+        ptr->next = list1;
+        list1 = list1->next;
+      } else {
+        ptr->next = list2;
+        list2 = list2->next;
+      }
+      ptr = ptr->next;
+      ptr->next = nullptr;
+    }
+    if (list1) {
+      ptr->next = list1;
+    } else {
+      ptr->next = list2;
+    }
+    return dummy->next;
+  }
+
+ public:
+  ListNode* mergeKLists(vector<ListNode*>& lists) {
+    ListNode* list = lists[0];
+    for (int i = 1; i < lists.size(); i++) {
+      list = merge(list, lists[i]);
+    }
+    return list;
+  }
+};
+
 }  // namespace leetcode
    // namespace leetcode

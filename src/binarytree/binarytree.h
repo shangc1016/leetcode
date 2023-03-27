@@ -3,8 +3,10 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <list>
 #include <queue>
 #include <string>
 #include <unordered_map>
@@ -381,6 +383,140 @@ class Codec {
     return build(vec);
   }
 };
+
+/////////////////////////////////// 3.27
+class Solution_1609 {
+ private:
+  vector<vector<int>> levelTraverse(TreeNode *root) {
+    if (root == nullptr) return {};
+    vector<vector<int>> vec;
+    queue<TreeNode *> queue_;
+    queue_.push(root);
+    while (!queue_.empty()) {
+      int sz = queue_.size();
+      vector<int> nums;
+      while (sz--) {
+        auto ptr = queue_.front();
+        queue_.pop();
+        nums.push_back(ptr->val);
+        if (ptr->left) queue_.push(ptr->left);
+        if (ptr->right) queue_.push(ptr->right);
+      }
+      vec.push_back(nums);
+    }
+    return vec;
+  }
+
+  bool judge(vector<int> &nums, int level) {
+    // 偶数层都是奇数，严格递增
+    // 奇数层都是偶数，严格递减
+
+    if (level % 2 == 0) {
+      // 偶数层
+      for (int val : nums) {
+        if (val % 2 == 0) return false;
+      }
+      if (nums.size() == 1) return true;
+      for (int i = 0; i < nums.size() - 1; i++) {
+        if (nums[i + 1] - nums[i] <= 0) return false;
+      }
+      return true;
+    } else {
+      // 奇数层
+      for (int val : nums) {
+        if (val % 2 == 1) return false;
+      }
+      if (nums.size() == 1) return true;
+      for (int i = 0; i < nums.size() - 1; i++) {
+        if (nums[i + 1] - nums[i] >= 0) return false;
+      }
+      return true;
+    }
+  }
+
+ public:
+  bool isEvenOddTree(TreeNode *root) {
+    auto lists = levelTraverse(root);
+    for (int i = 0; i < lists.size(); i++) {
+      if (judge(lists[i], i) == false) return false;
+    }
+    return true;
+  }
+};
+
+// 二叉树着色，线段树
+class Solution_LCP_52 {
+  void InOrderTraverse(TreeNode *root, vector<int> &nums) {
+    if (root == nullptr) return;
+    InOrderTraverse(root->left, nums);
+    nums.push_back(root->val);
+    InOrderTraverse(root->right, nums);
+  }
+
+ public:
+  int getNumber(TreeNode *root, vector<vector<int>> &ops) {
+    vector<int> nums;
+    InOrderTraverse(root, nums);
+
+    std::list<int> red_list;
+    for (auto op : ops) {
+      switch (op[0]) {
+        case 0:
+          // 染蓝色
+          for (int i = 0; i < nums.size(); i++) {
+            if (op[1] <= nums[i] && nums[i] <= op[2]) {
+              red_list.remove(nums[i]);
+            }
+          }
+          break;
+        case 1:
+          // 染红色
+          for (int i = 0; i < nums.size(); i++) {
+            if (op[1] <= nums[i] && nums[i] <= op[2]) {
+              red_list.remove(nums[i]);
+              red_list.push_back(nums[i]);
+            }
+          }
+          break;
+      }
+    }
+    return red_list.size();
+  }
+};
+
+class Solution_1373 {
+ private:
+  void InOrder(TreeNode *root, vector<int> &nums) {
+    if (root == nullptr) return;
+    InOrder(root->left, nums);
+    nums.push_back(root->val);
+    InOrder(root->right, nums);
+  }
+
+ public:
+  int maxSumBST(TreeNode *root) {
+    // 寻找数组的最大严格上升子序列的和
+
+    vector<int> nums;
+    InOrder(root, nums);
+    // dp[i]表示以i结尾的数组中最大的严格连续递增序列的个数
+    vector<int> dp(nums.size(), 1);
+    int maxIndex = 0;
+    for (int i = 1; i < dp.size(); i++) {
+      if (nums[i] > nums[i - 1]) {
+        dp[i] += dp[i - 1];
+      }
+      if (dp[maxIndex] < dp[i]) maxIndex = i;
+    }
+    int startIndex = maxIndex - dp[maxIndex];
+    int sum = 0;
+    for (int i = startIndex; i <= maxIndex; i++) {
+      sum += dp[i];
+    }
+    return sum;
+  }
+};
+
 }  // namespace binarytree
 
 #endif
