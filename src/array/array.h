@@ -1,7 +1,9 @@
 #include <limits.h>
 
 #include <algorithm>
+#include <array>
 #include <queue>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -66,5 +68,74 @@ int pivotIndex(vector<int>& nums) {
   }
   return -1;
 }
+
+class Solution_215 {
+ private:
+  int partition(vector<int>& nums, int low, int high) {
+    int i = low;
+    int j = high + 1;
+    int value = nums[low];
+    while (true) {
+      while (nums[++i] > value)
+        if (i == high) break;
+      while (value > nums[--j])
+        if (j == low) break;
+      if (i >= j) break;
+      swap(nums[i], nums[j]);
+    }
+    swap(nums[j], nums[low]);
+    return j;
+  }
+
+  int helper(vector<int>& nums, int low, int high, int k) {
+    if (low >= high) return nums[low];
+    while (true) {
+      int pivot = partition(nums, low, high);
+      if (pivot == k)
+        return nums[pivot];
+      else if (pivot > k) {
+        return helper(nums, low, pivot - 1, k);
+      } else {
+        return helper(nums, pivot + 1, high, k);
+      }
+    }
+  }
+
+ public:
+  int findKthLargest(vector<int>& nums, int k) {
+    if (k > nums.size()) return 0;
+    return helper(nums, 0, nums.size() - 1, k - 1);
+  }
+};
+
+class Solution {
+ private:
+  string result;
+
+  void helper(string s) {
+    if (s.empty()) return;
+    queue<string> queue;
+    queue.push(s);
+    while (!queue.empty()) {
+      string str = queue.front();
+      queue.pop();
+      string reverse(str.rbegin(), str.rend());
+      if (reverse.compare(str) == 0) {
+        result = reverse;
+        return;
+      }
+      if (!str.empty()) {
+        queue.push(str.substr(1));
+        queue.push(str.substr(0, str.size() - 1));
+      }
+    }
+  }
+
+ public:
+  string longestPalindrome(string s) {
+    helper(s);
+    return result;
+  }
+};
 
 }  // namespace leetcode

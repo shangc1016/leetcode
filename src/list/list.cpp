@@ -6,15 +6,6 @@
 
 namespace leetcode {
 
-void traverse(ListNode* head) {
-  std::cout << "[traverse]: ";
-  while (head) {
-    std::cout << head->val << " ";
-    head = head->next;
-  }
-  std::cout << std::endl;
-}
-
 ListNode* buildList(vector<int>& nums) {
   ListNode* head = nullptr;
   ListNode* ptr;
@@ -90,11 +81,11 @@ ListNode* detectCycle(ListNode* head) {
   ListNode* fast = head;
   ListNode* slow = head;
   while (fast && slow) {
-    if(!fast->next || !fast->next->next) break;
+    if (!fast->next || !fast->next->next) break;
     fast = fast->next->next;
-    if(!slow->next) break;
+    if (!slow->next) break;
     slow = slow->next;
-    if(fast == slow) break;
+    if (fast == slow) break;
   }
   if (!fast->next || !fast->next->next || !slow->next) return nullptr;
   fast = head;
