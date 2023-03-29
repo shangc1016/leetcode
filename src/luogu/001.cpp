@@ -61,60 +61,7 @@ int main() {
   //
   //
 
-  cin >> size;
-
-  for (int i = 1; i <= size; i++) {
-    for (int j = 1; j <= size; j++) {
-      cin >> first[i][j];
-    }
-  }
-
-  for (int i = 1; i <= size; i++) {
-    for (int j = 1; j <= size; j++) {
-      cin >> second[i][j];
-    }
-  }
-
-  op1();
-  if (same(result, second)) {
-    cout << 1 << endl;
-    return 0;
-  }
-
-  op2();
-  if (same(result, second)) {
-    cout << 2 << endl;
-    return 0;
-  }
-
-  op3();
-  if (same(result, second)) {
-    return 0;
-  }
-
-  op4();
-  if (same(result, second)) {
-    cout << 4 << endl;
-    return 0;
-  }
-
-  op1();
-  if (same(result, second)) {
-    cout << 5 << endl;
-    return 0;
-  }
-
-  op2();
-  if (same(result, second)) {
-    cout << 5 << endl;
-    return 0;
-  }
-  op3();
-  if (same(result, second)) {
-    cout << 5 << endl;
-    return 0;
-  }
-  cout << 6 << endl;
+  printf("%0*d\n", 12, 6);
 
   //
   return 0;
