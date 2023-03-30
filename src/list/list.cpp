@@ -1,8 +1,11 @@
 #include "list.h"
 
+#include <cmath>
 #include <cstddef>
 #include <cstdio>
+#include <ios>
 #include <iostream>
+#include <vector>
 
 namespace leetcode {
 
@@ -179,4 +182,57 @@ ListNode* swapPairs(ListNode* head) {
   // traverse(newHead);
   return reverse(newHead);
 }
+
+ListNode* reverse1(ListNode* list) {
+  if (list == nullptr || list->next == nullptr) return list;
+  ListNode* rev = nullptr;
+  ListNode* p = list;
+  ListNode* ptr;
+  while (p) {
+    ptr = p;
+    p = p->next;
+    ptr->next = rev;
+    rev = ptr;
+  }
+  return rev;
+}
+
+ListNode* tail(ListNode* list) {
+  ListNode* ptr = list;
+  while (ptr && ptr->next) {
+    ptr = ptr->next;
+  }
+  return ptr;
+}
+
+ListNode* reverseBetween(ListNode* head, int left, int right) {
+  if (head == nullptr || head->next == nullptr) return head;
+  if (left == right) return head;
+
+  ListNode* dummy = new ListNode(0, head);
+
+  vector<ListNode*> vec;
+
+  vec.push_back(dummy);
+
+  ListNode* ptr = dummy;
+  while (ptr && ptr->next) {
+    if (ptr->next->val == left) {
+      vec.push_back(ptr->next);
+      ptr->next = nullptr;
+    }
+    if (ptr->val == right) {
+      vec.push_back(ptr->next);
+      ptr->next = nullptr;
+    }
+    ptr = ptr->next;
+  }
+  auto rev = reverse1(vec[1]);
+  ListNode* tail1 = tail(dummy);
+  tail1->next = rev;
+  ListNode* tail2 = tail(rev);
+  tail2->next = vec[2];
+  return dummy->next;
+}
+
 }  // namespace leetcode

@@ -212,34 +212,6 @@ class Solution {
   }
 };
 
-// class Solution_82 {
-//  public:
-//   ListNode* deleteDuplicates(ListNode* head) {
-//     if (head == nullptr) return nullptr;
-
-//     map<int, int> map;
-//     // 用哈希表存储重复元素
-//     auto ptr = head;
-//     while (ptr) {
-//       map[ptr->val]++;
-//       ptr = ptr->next;
-//     }
-//     ListNode* dummy = new ListNode(0, head);
-//     ptr = dummy;
-//     while (ptr->next) {
-//       if (map.find(ptr->val) != map.end()) {
-//         auto tmp = ptr->next;
-//         ptr->next = tmp;
-//       }
-//       ptr = ptr->next;
-//     }
-//     return dummy->next;
-//   }
-// };
-
-
-
-
+ListNode* reverseBetween(ListNode* head, int left, int right);
 
 }  // namespace leetcode
-   // namespace leetcode

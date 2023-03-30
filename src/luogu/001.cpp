@@ -1,68 +1,36 @@
 #include <algorithm>
-#include <cmath>
-#include <cstdio>
 #include <iostream>
-#include <utility>
-#include <vector>
-
 using namespace std;
 
-int size;
-char first[11][11];
-char result[11][11];
-char second[11][11];
+int n, m;
+char matrix[101][101];
 
-bool same(char A[][11], char B[][11]) {
-  for (int i = 1; i <= size; i++) {
-    for (int j = 1; j <= size; j++) {
-      if (A[i][j] != B[i][j]) return false;
-    }
-  }
-  return true;
-}
-
-// 顺时针旋转90
-void op1() {
-  for (int i = 1; i <= size; i++) {
-    for (int j = 1; j <= size; j++) {
-      result[i][j] = first[size - j + 1][i];
-    }
-  }
-}
-
-// 顺时针旋转180
-void op2() {
-  for (int i = 1; i <= size; i++) {
-    for (int j = 1; j <= size; j++) {
-      result[i][j] = first[size - i + 1][size - j + 1];
-    }
-  }
-}
-
-// 顺时针旋转270
-void op3() {
-  for (int i = 1; i <= size; i++) {
-    for (int j = 1; j <= size; j++) {
-      result[i][j] = first[j][size - i + 1];
-    }
-  }
-}
-
-// 反射，水平翻转
-void op4() {
-  for (int i = 1; i <= size; i++) {
-    for (int j = 1; j <= size; j++) {
-      result[i][j] = first[i][size - j + 1];
-    }
-  }
-}
+int helper(int x, int y) {}
 
 int main() {
   //
-  //
+  cin >> n >> m;
 
-  printf("%0*d\n", 12, 6);
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+      cin >> matrix[i][j];
+    }
+  }
 
-  //
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+      if (matrix[i][j] == '*') continue;
+      matrix[i][j] = helper(i, j) + '0';
+    }
+  }
+
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+      cout << matrix[i][j] << " ";
+    }
+    cout << endl;
+  }
+
   return 0;
+  //
 }
