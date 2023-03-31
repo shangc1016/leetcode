@@ -1,36 +1,45 @@
 #include <algorithm>
+#include <cstdlib>
 #include <iostream>
+#include <iterator>
+#include <map>
+#include <ostream>
+#include <vector>
 using namespace std;
 
-int n, m;
-char matrix[101][101];
+int arr[500001] = {0};
+int dp[500001] = {0};
 
-int helper(int x, int y) {}
+// 二分查找，加上线性探测
+
+inline int read() {
+  int x = 0, f = 1;
+  char c = getchar();
+  while (c < '0' || c > '9') {
+    if (c == '-') f = -1;
+    c = getchar();
+  }
+  while (c >= '0' && c <= '9') {
+    x = (x << 1) + (x << 3) + (c ^ 48);
+    c = getchar();
+  }
+  return x * f;
+}
 
 int main() {
   //
-  cin >> n >> m;
 
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= m; j++) {
-      cin >> matrix[i][j];
-    }
+  int n;
+  cin >> n;
+  for (int i = 0; i < n; i++) {
+    arr[i] = read();
   }
 
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= m; j++) {
-      if (matrix[i][j] == '*') continue;
-      matrix[i][j] = helper(i, j) + '0';
-    }
-  }
+  // dp
+  for (int i = 1; i < n; i++) {
+    
+   }
 
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= m; j++) {
-      cout << matrix[i][j] << " ";
-    }
-    cout << endl;
-  }
-
-  return 0;
   //
+  return 0;
 }

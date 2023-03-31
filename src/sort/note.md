@@ -85,3 +85,31 @@ class ShuffleQuickSort {
 ```
 
 ![20230327145534](https://note-img-1300721153.cos.ap-nanjing.myqcloud.com/md-img20230327145534.png)
+
+
+### 计数排序
+
+
+```cpp
+#include <cstdlib>
+#include <iostream>
+#include <map>
+#include <vector>
+
+using namespace std;
+
+//快速读入
+inline int read() {
+  int x = 0, f = 1;
+  char c = getchar();
+  while (c < '0' || c > '9') {
+    if (c == '-') f = -1;
+    c = getchar();
+  }
+  while (c >= '0' && c <= '9') {
+    x = (x << 1) + (x << 3) + (c ^ 48);
+    c = getchar();
+  }
+  return x * f;
+}
+```
