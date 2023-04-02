@@ -6,25 +6,23 @@
 #include <map>
 #include <ostream>
 #include <vector>
+#include <unordered_map>
+#include <list>
 using namespace std;
 
 int main() {
   //
   //
-  map<int, bool> status_;
+  std::list<int> list_;
 
-  status_[1] = false;
-  status_[2] = true;
-  status_[100] = false;
+  map<int, int> umap;
 
-  for (auto it = status_.begin(); it != status_.end(); it++) {
-    cout << it->first << endl;
-  }
-  status_.erase(100);
+  umap.insert({1, 1});
+  umap.insert({2, 1});
+  umap.insert({5, 1});
 
-  cout << "---" << endl;
-  for (auto it = status_.begin(); it != status_.end(); it++) {
-    cout << it->first << endl;
+  for (auto it : umap) {
+    cout << it.first << ", "<< it.second << std::endl;
   }
 
   //
