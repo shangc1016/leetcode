@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cstdint>
 #include <iostream>
 #include <set>
 #include <unordered_map>
@@ -192,7 +193,7 @@ void setZeroes(vector<vector<int>>& matrix) {
   for (int i = 0; i < r; i++) {
     if (uset1.find(i) != uset1.end()) {
       matrix[i].clear();
-      for(int i=0;i<c;i++) matrix[i].push_back(0);
+      for (int i = 0; i < c; i++) matrix[i].push_back(0);
     }
   }
   for (int i = 0; i < r; i++) {
@@ -203,6 +204,99 @@ void setZeroes(vector<vector<int>>& matrix) {
       }
     }
   }
+}
+
+// 旋转数组顺时针90度
+void rotate(vector<vector<int>>& matrix) {
+  // 先上下翻转、再沿着主对角线翻转
+
+  for (int i = 0; i < matrix.size() / 2; i++) {
+    swap(matrix[i], matrix[matrix.size() - 1 - i]);
+  }
+
+  for (int i = 0; i < matrix.size(); i++) {
+    for (int j = i + 1; j < matrix[0].size(); j++) {
+      swap(matrix[i][j], matrix[j][i]);
+    }
+  }
+}
+
+// 先计算0的个数
+
+void moveZeroes(vector<int>& nums) {
+  int nonZeroPos = 0;
+  //
+
+  for (int i = 0; i < nums.size(); i++) {
+    if (nums[i] != 0) {
+      nums[nonZeroPos++] = nums[i];
+    }
+  }
+  for (int i = nums.size() - nonZeroPos; i < nums.size(); i++) {
+    nums[i] = 0;
+  }
+}
+
+// 双指针，向内移动边界
+// 向内移动，底边一定变小。
+// 向内移动长边，一定缩小
+// 向内移动短边，可能增大
+int maxArea(vector<int>& height) {
+  int left = 0;
+  int right = height.size() - 1;
+  int area = min(height[left], height[right]) * (right - left);
+  while (left < right) {
+    if (height[left] > height[right]) {
+      right--;
+      area = max(area, min(height[left], height[right]) * (right - left));
+    } else {
+      left++;
+      area = max(area, min(height[left], height[right]) * (right - left));
+    }
+  }
+  return area;
+}
+
+int trap(vector<int>& height) {
+  // 按照列计算，
+  // 首先需要知道每列，左右两侧最大的高度
+
+  vector<int> leftHightest(height.size(), 0);
+  vector<int> rightHeightest(height.size(), 0);
+
+  vector<int> tmp;
+  for (int i = 0; i < height.size(); i++) {
+    if (!tmp.empty() && tmp.back() < height[i]) {
+      while (!tmp.empty() && tmp.back() < height[i]) tmp.pop_back();
+      tmp.push_back(height[i]);
+    } else if (tmp.empty()) {
+      tmp.push_back(height[i]);
+    }
+    leftHightest[i] = tmp.back();
+  }
+
+  tmp.clear();
+  cout << endl;
+
+  for (int i = height.size() - 1; i >= 0; i--) {
+    if (!tmp.empty() && tmp.back() < height[i]) {
+      while (!tmp.empty() && tmp.back() < height[i]) tmp.pop_back();
+      tmp.push_back(height[i]);
+    } else if (tmp.empty()) {
+      tmp.push_back(height[i]);
+    }
+    rightHeightest[i] = tmp.back();
+  }
+
+  int count = 0;
+  // 只有在小于两边的Heightest的最小值，才取值
+  for (int i = 0; i < height.size(); i++) {
+    if (height[i] < min(leftHightest[i], rightHeightest[i])) {
+      count += min(leftHightest[i], rightHeightest[i]) - height[i];
+    }
+  }
+
+  return count;
 }
 
 }  // namespace leetcode

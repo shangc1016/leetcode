@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
+#include <map>
 #include <stack>
 #include <string>
 #include <vector>
@@ -147,5 +149,30 @@ class Solution {
     return prefix;
   }
 };
+
+// 对每个字符串排序，如果是异位的字符串，它排序的结果是相同的，用map存储
+class Solution_49 {
+ private:
+  string helper(const string& str) {
+    string tmp = str;
+    std::sort(tmp.begin(), tmp.end());
+    return tmp;
+  }
+
+ public:
+  vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    map<string, vector<string>> map;
+    for (auto str : strs) {
+      map[helper(str)].push_back(str);
+    }
+    vector<vector<string>> vec;
+    for (auto item : map) {
+      vec.push_back(item.second);
+    }
+    return vec;
+  }
+};
+
+int longestConsecutive(vector<int>& nums);
 
 }  // namespace mystring

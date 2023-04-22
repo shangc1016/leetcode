@@ -869,4 +869,36 @@ int numDistinct(string s, string t) {
   return dp[sz1][sz2];
 }
 
+// 计算回文子串的个数
+// dp[i][j]表示从下标i到下标j是否为回文子串
+// if (s[i] == s[j]) {
+//   if (i - j <= 1) {
+//     result++;
+//     dp[i][j]  =true;
+//   } else if (dp[i + 1][j - 1]) {
+//     result++;
+//     dp[i][j] = true;
+//   }
+// }
+// 遍历顺序：根据递推公式可以看出，dp[i][j]是根据dp[i+1][j-1]确定的。在二维dp数组中
+// dp[i+1][j-1]的位置在dp[i][j]的左下角，那就是要从左下角遍历到右上角。
+
+int countSubstrings(string s) {
+  // 总的回文子串的个数
+  int result = 0;
+  vector<vector<bool>> dp(s.size(), vector<bool>(s.size(), false));
+
+  for (int i = s.size() - 1; i >= 0; i--) {
+    for (int j = i; j < s.size(); j++) {
+      if (s[i] == s[j]) {
+        if (j - i <= 1 || dp[i + 1][j - 1]) {
+          result++;
+          dp[i][j] = true;
+        }
+      }
+    }
+  }
+  return result;
+}
+
 }  // namespace dp

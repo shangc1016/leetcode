@@ -78,5 +78,7 @@ int maxSubArray(vector<int>& nums);
 bool isSubsequence(string s, string t);
 
 int numDistinct(string s, string t);
+
+int countSubstrings(string s);
 }  // namespace dp
 #endif
