@@ -1,5 +1,6 @@
 
 
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 #include <map>
@@ -213,5 +214,33 @@ class Solution {
 };
 
 ListNode* reverseBetween(ListNode* head, int left, int right);
+
+class Solution_148 {
+ private:
+  static bool cmp(ListNode* A, ListNode* B) { return A->val > B->val; }
+
+ public:
+  ListNode* sortList(ListNode* head) {
+    if (head == nullptr) return nullptr;
+    vector<ListNode*> vec;
+    auto ptr = head;
+    while (ptr) {
+      vec.push_back(ptr);
+      ptr = ptr->next;
+    }
+    std::sort(vec.begin(), vec.end(), cmp);
+    ListNode* dummy = new ListNode(0);
+    ptr = dummy;
+    while (!vec.empty()) {
+      ptr->next = vec.back();
+      vec.pop_back();
+      ptr = ptr->next;
+      ptr->next = nullptr;
+    }
+    return dummy->next;
+
+     
+  }
+};
 
 }  // namespace leetcode
