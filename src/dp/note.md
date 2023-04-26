@@ -281,3 +281,11 @@ int maxProfit(vector<int>& prices, int fee) {
   return dp[prices.size()-1][1];
 }
 ```
+
+
+
+## 背包问题
+
+- 01背包
+- 完全背包
+- 分组背包

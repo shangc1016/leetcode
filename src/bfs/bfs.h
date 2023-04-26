@@ -1,6 +1,12 @@
 #ifndef __BFS_H_
 #define __BFS_H_
 
-namespace bfs {}
+#include <string>
+#include <vector>
+using namespace std;
+
+namespace bfs {
+
+}  // namespace bfs
 
 #endif
